@@ -7,10 +7,10 @@ The app is functionally and visually the same; files were only removed when noth
 | | Original | This build |
 |---|---|---|
 | Application files (without `.git`) | **54.69 MiB** (4,003 files) | **19.29 MiB** (2,026 files) |
-| Install ZIP | 24.43 MB | **8.46 MB** ✅ under 15 MB |
+| Install ZIP | 24.43 MB | **8.51 MB** ✅ under 15 MB |
 
 * ZIP: **`boostmysocial-lite.zip`** — this is the file to upload to hosting.
-* The unpacked app is 20.23 MB (19.29 MiB). Hosting upload limits apply to the ZIP, which is 8.46 MB.
+* The unpacked app is 20.23 MB (19.29 MiB). Hosting upload limits apply to the ZIP, which is 8.51 MB.
 * `.git` (version history) is not part of the ZIP and is not included in the numbers above.
 
 ## What was removed — 28.85 MiB, 1,977 files
@@ -61,4 +61,4 @@ Everything else (all 30 modules, CodeIgniter core, PhpSpreadsheet runtime, PHPMa
 2. Import `dlititci_boostmysocial2.sql` into MySQL.
 3. Edit `app/config/database.php` with your database details and open the site.
 
-If you need the **unpacked** folder itself below 15 MB, that would require removing real features (e.g. the Excel export library ≈4.5 MiB, the admin editor, or all flags). The current build avoids that, and the 8.46 MB install ZIP is the artifact hosting panels check.
+If you need the **unpacked** folder itself below 15 MB, that would require removing real features (e.g. the Excel export library ≈4.5 MiB, the admin editor, or all flags). The current build avoids that, and the 8.51 MB install ZIP is the artifact hosting panels check.

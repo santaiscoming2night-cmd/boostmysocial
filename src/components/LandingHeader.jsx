@@ -10,7 +10,18 @@ export default function LandingHeader({ settings, user }) {
       <div className="container">
         <nav className="navbar navbar-expand-lg">
           <Link className="navbar-brand" href="/">
-            <img className="site-logo-white" src={settings.website_logo || '/assets/images/logo.png'} alt="Website logo" />
+            <img
+              className="site-logo d-none"
+              src={settings.website_logo || '/assets/images/logo.png'}
+              alt="Website logo"
+              onError={(event) => { event.currentTarget.src = '/assets/images/logo.png'; }}
+            />
+            <img
+              className="site-logo-white"
+              src={settings.website_logo_white || settings.website_logo || '/assets/images/logo-white.png'}
+              alt="Website logo"
+              onError={(event) => { event.currentTarget.src = '/assets/images/logo-white.png'; }}
+            />
           </Link>
           <button className="navbar-toggler" type="button" onClick={() => setOpen(!open)} aria-label="Toggle navigation">
             <span><i className="fe fe-menu" /></span>

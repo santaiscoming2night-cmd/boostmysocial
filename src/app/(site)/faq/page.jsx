@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getSettings } from '@/lib/settings';
 
-export const metadata = { title: 'Knowledge base' };
+export const metadata = { title: 'HELP' };
 export const dynamic = 'force-dynamic';
 
 export default async function FaqPage() {
@@ -15,9 +15,9 @@ export default async function FaqPage() {
         <div className="row justify-content-center">
           <div className="col-lg-9">
             <div className="atelier-section-heading center mb-5">
-              <p className="atelier-kicker">Knowledge base</p>
-              <h1>Answers, without the noise.</h1>
-              <p>Everything you need to move confidently through the panel.</p>
+              <p className="atelier-kicker">HELP</p>
+              <h1>Help and answers.</h1>
+              <p>Quick answers to common questions.</p>
             </div>
             {(faqs || []).map((faq) => (
               <details className="card atelier-public-faq" key={faq.id}>
@@ -28,7 +28,7 @@ export default async function FaqPage() {
                 <div className="card-body text-muted" style={{ whiteSpace: 'pre-wrap' }}>{faq.answer}</div>
               </details>
             ))}
-            {(faqs || []).length === 0 ? <p className="text-center text-muted">No answers have been published yet.</p> : null}
+            {(faqs || []).length === 0 ? <p className="text-center text-muted">No answers have been added yet.</p> : null}
           </div>
         </div>
       </div>

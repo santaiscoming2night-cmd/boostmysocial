@@ -37,7 +37,7 @@ export default function LandingHeader({ settings, user }) {
           ) : (
             <>
               <Link className="social-sign-in" href="/login">Sign in</Link>
-              <Link href="/signup" className="social-header-cta"><i className="fe fe-zap" />Boost now</Link>
+              <Link href="/signup" className="social-header-cta"><i className="fe fe-zap" />Get started</Link>
             </>
           )}
         </div>

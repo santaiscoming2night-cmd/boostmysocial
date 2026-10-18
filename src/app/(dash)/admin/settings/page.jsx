@@ -5,7 +5,7 @@ import SubmitButton from '@/components/SubmitButton';
 import BrandSettingsFields from '@/components/BrandSettingsFields';
 import { saveSettings } from '@/app/actions/admin';
 
-export const metadata = { title: 'Panel settings' };
+export const metadata = { title: 'Site settings' };
 export const dynamic = 'force-dynamic';
 
 const FIELDS = [
@@ -37,7 +37,7 @@ export default async function AdminSettingsPage({ searchParams }) {
 
   return (
     <>
-      <PageTitle icon="fe fe-sliders">Panel settings</PageTitle>
+      <PageTitle icon="fe fe-sliders">Site settings</PageTitle>
       <Flash ok={params.ok} err={params.err} />
       <form action={saveSettings} className="settings-studio-form">
         <BrandSettingsFields settings={settings} />
@@ -45,8 +45,8 @@ export default async function AdminSettingsPage({ searchParams }) {
         <div className="card settings-studio-card">
           <div className="card-header">
             <div>
-              <span className="settings-studio-label">Operations</span>
-              <h2 className="card-title">Panel configuration</h2>
+              <span className="settings-studio-label">BASIC SETTINGS</span>
+              <h2 className="card-title">Site settings</h2>
             </div>
           </div>
           <div className="card-body">
@@ -70,8 +70,8 @@ export default async function AdminSettingsPage({ searchParams }) {
         <div className="card settings-studio-card">
           <div className="card-header">
             <div>
-              <span className="settings-studio-label">Controls</span>
-              <h2 className="card-title">Workspace access</h2>
+              <span className="settings-studio-label">ACCESS SETTINGS</span>
+              <h2 className="card-title">Account access</h2>
             </div>
           </div>
           <div className="card-body settings-switches">
@@ -93,8 +93,8 @@ export default async function AdminSettingsPage({ searchParams }) {
         </div>
 
         <div className="settings-save-bar">
-          <p>Changes update the panel name, brand mark, and message everywhere on the next page load.</p>
-          <SubmitButton className="btn btn-primary btn-lg" pendingText="Saving identity…">Save panel identity <i className="fe fe-check" /></SubmitButton>
+          <p>Changes update your site name, logo, and tagline everywhere.</p>
+          <SubmitButton className="btn btn-primary btn-lg" pendingText="Saving…">Save changes <i className="fe fe-check" /></SubmitButton>
         </div>
       </form>
     </>

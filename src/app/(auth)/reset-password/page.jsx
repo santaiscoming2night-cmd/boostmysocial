@@ -14,7 +14,7 @@ export default async function ResetPasswordPage({ searchParams }) {
       <div className="col-md-6 col-lg-5">
         <div className="card">
           <h1 className="card-title">Set a new key.</h1>
-          <p className="social-auth-subtitle">Choose a strong password to restore access to your social workspace.</p>
+          <p className="social-auth-subtitle">Choose a strong password to get back into your account.</p>
           <Flash ok={params.ok} err={params.err} />
           {user ? (
             <form action={updatePassword}>

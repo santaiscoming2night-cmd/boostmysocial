@@ -15,15 +15,15 @@ export default function LandingFooter({ settings }) {
       <div className="social-footer-top">
         <div className="social-footer-brand">
           <Brand settings={settings} showTagline />
-          <p>{tagline} Build the next wave from a workspace made for the speed of social.</p>
+          <p>Social media services made simple.</p>
           <div className="social-footer-platforms" aria-hidden="true"><i className="fa fa-instagram" /><i className="fa fa-youtube-play" /><i className="fa fa-facebook" /><i className="fa fa-music" /></div>
         </div>
         <div className="social-footer-column">
           <h2>Discover</h2>
           <nav aria-label="Discover">
-            <Link href="/services">Boost menu</Link>
-            <Link href="/news">Social desk</Link>
-            <Link href="/faq">Quick answers</Link>
+            <Link href="/services">Services</Link>
+            <Link href="/news">Updates</Link>
+            <Link href="/faq">FAQ</Link>
           </nav>
         </div>
         <div className="social-footer-column">
@@ -35,8 +35,8 @@ export default function LandingFooter({ settings }) {
           </nav>
         </div>
         <div className="social-footer-column social-footer-subscribe">
-          <h2>Stay in the loop</h2>
-          <p>Useful service notes, no endless noise.</p>
+          <h2>Updates</h2>
+          <p>Get service and site updates.</p>
           <form action="/api/subscribe" method="post">
             <label className="sr-only" htmlFor="panel-updates-email">Email for panel updates</label>
             <input id="panel-updates-email" type="email" name="email" placeholder="you@example.com" required />

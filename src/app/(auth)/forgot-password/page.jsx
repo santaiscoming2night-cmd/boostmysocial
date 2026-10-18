@@ -13,7 +13,7 @@ export default async function ForgotPasswordPage({ searchParams }) {
       <div className="col-md-6 col-lg-5">
         <div className="card">
           <h1 className="card-title">Recover access.</h1>
-          <p className="social-auth-subtitle">Enter the email on your workspace and we&apos;ll send a secure password recovery link.</p>
+          <p className="social-auth-subtitle">Enter your email and we&apos;ll send you a password reset link.</p>
           <Flash ok={params.ok} err={params.err} />
           <form action={requestPasswordReset}>
             <div className="form-group">

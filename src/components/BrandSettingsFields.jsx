@@ -29,27 +29,27 @@ export default function BrandSettingsFields({ settings }) {
   return (
     <section className="brand-studio">
       <div className="brand-studio-intro">
-        <p className="brand-studio-eyebrow">Brand identity</p>
-        <h2>Make the panel unmistakably yours.</h2>
-        <p>Name, mark, and message are used across the public site, access screens, and social workspace.</p>
+        <p className="brand-studio-eyebrow">YOUR BRAND</p>
+        <h2>Make the site yours.</h2>
+        <p>Your name, logo, and tagline appear across the site.</p>
       </div>
       <div className="brand-studio-preview" aria-label="Live brand preview">
         <div className="brand-studio-preview-mark"><LogoPreview key={logo} url={logo} name={name} /></div>
         <div>
           <strong>{name || 'Your panel name'}</strong>
-          <span>{tagline || 'Your distinct point of view goes here.'}</span>
+          <span>{tagline || 'Your tagline goes here.'}</span>
         </div>
         <small>LIVE PREVIEW</small>
       </div>
       <div className="brand-studio-fields">
         <div className="form-group">
-          <label className="form-label" htmlFor="website-title">Panel name</label>
+          <label className="form-label" htmlFor="website-title">Site name</label>
           <input id="website-title" name="s_website_title" value={name} onChange={(event) => setName(event.target.value)} className="form-control" required />
         </div>
         <div className="form-group brand-studio-field-wide">
           <label className="form-label" htmlFor="website-tagline">Tagline</label>
-          <input id="website-tagline" name="s_website_tagline" value={tagline} onChange={(event) => setTagline(event.target.value)} className="form-control" placeholder="A short, memorable point of view" />
-          <small>Shown below your name on the home page and brand surfaces.</small>
+          <input id="website-tagline" name="s_website_tagline" value={tagline} onChange={(event) => setTagline(event.target.value)} className="form-control" placeholder="A short line about your site" />
+          <small>Shown below your name across the site.</small>
         </div>
         <div className="form-group brand-studio-field-wide">
           <label className="form-label" htmlFor="website-logo">Primary logo URL</label>

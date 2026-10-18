@@ -16,9 +16,9 @@ export default async function ServicesPage() {
       <section className="pt-90 pb-90">
         <div className="container atelier-public-page text-center">
           <div className="atelier-section-heading center">
-            <p className="atelier-kicker">Social menu</p>
-            <h1>Explore your boost menu.</h1>
-            <p>Sign in to explore services and start campaigns from your social workspace.</p>
+            <p className="atelier-kicker">SERVICES</p>
+            <h1>Browse our services.</h1>
+            <p>Sign in to view services and place an order.</p>
           </div>
           <Link href="/login?next=/services" className="btn mt-4"><i className="fe fe-log-in" /> Sign in to explore</Link>
         </div>
@@ -52,14 +52,14 @@ export default async function ServicesPage() {
     <section className="pt-90 pb-90">
       <div className="container atelier-public-page">
         <div className="atelier-section-heading center atelier-catalog-heading">
-          <p className="atelier-kicker">Live boost menu</p>
-          <h1>Find your next boost.</h1>
-          <p>Browse current services, limits, and rates. Prices shown are per 1,000 units.</p>
+          <p className="atelier-kicker">SERVICES</p>
+          <h1>Find a service.</h1>
+          <p>Browse current services, limits, and prices. Prices are shown per 1,000 units.</p>
         </div>
         {!user ? (
           <div className="text-center atelier-public-actions">
             <Link href="/login?next=/services" className="btn"><i className="fe fe-log-in" /> Sign in to boost</Link>
-            <Link href="/signup" className="btn btn-outline-primary">Create instant access <i className="fe fe-arrow-up-right" /></Link>
+            <Link href="/signup" className="btn btn-outline-primary">Create an account <i className="fe fe-arrow-up-right" /></Link>
           </div>
         ) : null}
         <ServicesBrowser

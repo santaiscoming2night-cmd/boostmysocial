@@ -45,6 +45,11 @@ export const getSettings = cache(async () => {
     (data || []).forEach((row) => {
       if (row.key) map[row.key] = row.value ?? '';
     });
+    // Refresh the visual system's old bundled default without affecting any
+    // tagline an administrator has actually customised.
+    if (map.website_tagline === 'Social growth, kept in line.') {
+      map.website_tagline = DEFAULT_SETTINGS.website_tagline;
+    }
     return map;
   } catch {
     return { ...DEFAULT_SETTINGS };

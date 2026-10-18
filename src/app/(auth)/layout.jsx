@@ -32,23 +32,23 @@ export default async function AuthLayout({ children }) {
             <ThemeToggle />
           </div>
           <div className="social-auth-manifesto">
-            <span>WELCOME TO THE BOOST ROOM</span>
-            <h1>Make your next post <em>hit different.</em></h1>
+            <span>WELCOME</span>
+            <h1>Grow your <em>social media.</em></h1>
             <p>{tagline}</p>
           </div>
           <div className="social-auth-principles">
-            <span><i className="fa fa-instagram" />Platform-first services</span>
-            <span><i className="fe fe-zap" />Fast boost flow</span>
-            <span><i className="fe fe-activity" />Live campaign visibility</span>
+            <span><i className="fa fa-instagram" />Services for every platform</span>
+            <span><i className="fe fe-zap" />Easy ordering</span>
+            <span><i className="fe fe-activity" />Track your orders</span>
           </div>
         </aside>
         <section className="social-auth-content">
           <div className="social-auth-content-top">
             <Link href="/" className="social-back"><i className="fe fe-arrow-left" aria-hidden="true" /> Back to the site</Link>
-            <span>YOUR SOCIAL SPACE</span>
+            <span>YOUR ACCOUNT</span>
           </div>
           <div className="social-auth-card">{children}</div>
-          <p className="social-auth-footnote">Private workspace · made for your next move</p>
+          <p className="social-auth-footnote">Your account is private.</p>
         </section>
       </div>
     </div>

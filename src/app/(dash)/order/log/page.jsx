@@ -8,7 +8,7 @@ import StatusBadge from '@/components/StatusBadge';
 import Flash from '@/components/Flash';
 import { cancelOrder } from '@/app/actions/dashboard';
 
-export const metadata = { title: 'Boost history' };
+export const metadata = { title: 'Order history' };
 export const dynamic = 'force-dynamic';
 
 const PER_PAGE = 25;
@@ -44,8 +44,8 @@ export default async function OrderLogPage({ searchParams }) {
 
   return (
     <>
-      <PageTitle icon="fe fe-inbox" actions={<Link href="/order/add" className="btn btn-primary"><i className="fe fe-plus mr-1" />New boost</Link>}>
-        Boost history
+      <PageTitle icon="fe fe-inbox" actions={<Link href="/order/add" className="btn btn-primary"><i className="fe fe-plus mr-1" />New order</Link>}>
+        Order history
       </PageTitle>
       <Flash ok={params.ok} err={params.err} />
 
@@ -64,7 +64,7 @@ export default async function OrderLogPage({ searchParams }) {
             <div className="col-md-3">
               <button className="btn btn-secondary" type="submit">Filter</button>
             </div>
-            <div className="col-md-2 text-md-right text-muted small align-self-center">{count || 0} boosts</div>
+            <div className="col-md-2 text-md-right text-muted small align-self-center">{count || 0} orders</div>
           </form>
         </div>
         <div className="table-responsive">
@@ -85,7 +85,7 @@ export default async function OrderLogPage({ searchParams }) {
             </thead>
             <tbody>
               {(orders || []).length === 0 ? (
-                <tr><td colSpan={10} className="text-center text-muted py-4">No boosts found.</td></tr>
+                <tr><td colSpan={10} className="text-center text-muted py-4">No orders found.</td></tr>
               ) : orders.map((order) => (
                 <tr key={order.id}>
                   <td className="text-muted">#{order.id}</td>

@@ -30,22 +30,30 @@ function explain(message) {
   return key ? RPC_ERRORS[key] : message;
 }
 
-export async function placeOrder(formData) {
+// Browser callers use this action instead of receiving Supabase credentials.
+export async function submitOrder(formData) {
   const user = await getSessionUser();
-  if (!user) redirect('/login');
+  if (!user) return { data: null, error: { message: 'Please sign in again.' } };
 
   const supabase = await createClient();
+  if (!supabase) return { data: null, error: { message: 'Supabase is not configured.' } };
   const { data, error } = await supabase.rpc('place_order', {
     p_service_id: Number(formData.get('service_id')),
-    p_link: String(formData.get('link') || ''),
+    p_link: String(formData.get('link') || '').trim(),
     p_quantity: Number(formData.get('quantity') || 0),
-    p_note: String(formData.get('note') || ''),
+    p_note: String(formData.get('note') || '').trim(),
     p_type: 'direct',
   });
 
-  if (error) back('/order/add', { err: explain(error.message) });
+  if (error) return { data: null, error: { message: explain(error.message) } };
   revalidatePath('/dashboard');
   revalidatePath('/order/log');
+  return { data, error: null };
+}
+
+export async function placeOrder(formData) {
+  const { data, error } = await submitOrder(formData);
+  if (error) back('/order/add', { err: error.message });
   back('/order/log', { ok: `Order #${data.order_id} placed successfully.` });
 }
 

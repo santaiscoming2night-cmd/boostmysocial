@@ -1,12 +1,11 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { submitOrder } from '@/app/actions/dashboard';
 
 export default function OrderForm({ categories, services, prices, symbol, minimumDeposit, initialServiceId = '' }) {
   const router = useRouter();
-  const supabase = useMemo(() => createClient(), []);
   const preset = services.find((s) => String(s.id) === String(initialServiceId));
   const [categoryId, setCategoryId] = useState(preset ? String(preset.category_id) : '');
   const [serviceId, setServiceId] = useState(preset ? String(preset.id) : '');
@@ -35,14 +34,21 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
     }
 
     setBusy(true);
-    const { data, error: rpcError } = await supabase.rpc('place_order', {
-      p_service_id: service.id,
-      p_link: link.trim(),
-      p_quantity: qty,
-      p_note: note.trim(),
-      p_type: 'direct',
-    });
-    setBusy(false);
+    const formData = new FormData();
+    formData.set('service_id', String(service.id));
+    formData.set('link', link.trim());
+    formData.set('quantity', String(qty));
+    formData.set('note', note.trim());
+    let result;
+    try {
+      result = await submitOrder(formData);
+    } catch {
+      setError('Unable to place order. Please try again.');
+      return;
+    } finally {
+      setBusy(false);
+    }
+    const { data, error: rpcError } = result;
 
     if (rpcError) {
       if (rpcError.message.includes('insufficient_funds')) {

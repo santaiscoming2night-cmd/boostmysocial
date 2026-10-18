@@ -1,46 +1,58 @@
 import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
 import { getSessionUser } from '@/lib/auth';
+import PlatformPlayground from '@/components/PlatformPlayground';
 
 export const dynamic = 'force-dynamic';
 
-const SOCIAL_ICONS = [
-  ['fa fa-instagram', 'instagram'],
-  ['fa fa-facebook', 'facebook'],
-  ['fa fa-youtube-play', 'youtube'],
-  ['fa fa-twitter', 'twitter'],
-  ['fa fa-music', 'tiktok'],
-  ['fa fa-soundcloud', 'soundcloud'],
+const HERO_STICKERS = [
+  ['fa fa-instagram', 'instagram', 'pulse-sticker--instagram'],
+  ['fa fa-youtube-play', 'youtube', 'pulse-sticker--youtube'],
+  ['fa fa-facebook', 'facebook', 'pulse-sticker--facebook'],
+  ['fa fa-music', 'tiktok', 'pulse-sticker--tiktok'],
 ];
 
-const GROWTH_MODES = [
-  { icon: 'fa fa-instagram', tone: 'instagram', title: 'Instagram growth', text: 'Choose likes, followers, views, and more for Instagram.' },
-  { icon: 'fa fa-youtube-play', tone: 'youtube', title: 'YouTube growth', text: 'Choose views, likes, and subscribers for your videos.' },
-  { icon: 'fa fa-music', tone: 'tiktok', title: 'TikTok growth', text: 'Choose likes, views, and followers for your TikTok.' },
-  { icon: 'fa fa-facebook', tone: 'facebook', title: 'Facebook growth', text: 'Choose services for your page, posts, and audience.' },
-];
-
-const STEPS = [
-  ['01', 'Choose a platform', 'Pick the social platform you want to grow.'],
-  ['02', 'Choose a service', 'See the price, minimum, and maximum.'],
-  ['03', 'Add your link', 'Paste your link and choose a quantity.'],
-  ['04', 'Track your order', 'Check your dashboard for status updates.'],
+const SIMPLE_STEPS = [
+  ['01', 'Pick a service', 'Choose the platform and service you need.', 'fe fe-compass'],
+  ['02', 'Add your link', 'Paste the link to your post, video, or page.', 'fe fe-link'],
+  ['03', 'Track your order', 'Check your dashboard for updates.', 'fe fe-activity'],
 ];
 
 const FAQS = [
-  ['What services are available?', 'Browse the service list to see available options for each platform.'],
-  ['Can I track my order?', 'Yes. Your dashboard shows the order status, price, and link.'],
-  ['What is scheduled delivery?', 'For selected services, you can spread a larger order over time.'],
+  ['What can I order?', 'Browse the service list to see available options for each platform.'],
+  ['Can I track my order?', 'Yes. Your dashboard shows your order status, price, and link.'],
   ['Can I start right away?', 'Yes. Your account opens as soon as you sign up.'],
 ];
 
-function FloatingSocialIcons({ className = '' }) {
+function HeroStickers() {
   return (
-    <div className={`social-float-field ${className}`} aria-hidden="true">
-      {SOCIAL_ICONS.map(([icon, tone], index) => (
-        <span className={`social-float social-float--${tone} social-float--${index + 1}`} key={tone}><i className={icon} /></span>
+    <div className="pulse-hero-stickers" aria-hidden="true">
+      {HERO_STICKERS.map(([icon, label, className]) => (
+        <span className={`pulse-sticker ${className}`} key={label}><i className={icon} /></span>
       ))}
+      <span className="pulse-sticker pulse-sticker--spark">✦</span>
+      <span className="pulse-sticker pulse-sticker--arrow"><i className="fe fe-arrow-down-right" /></span>
     </div>
+  );
+}
+
+function PlatformRibbon() {
+  const items = [
+    ['fa fa-instagram', 'Instagram'],
+    ['fa fa-youtube-play', 'YouTube'],
+    ['fa fa-music', 'TikTok'],
+    ['fa fa-facebook', 'Facebook'],
+    ['fa fa-twitter', 'X / Twitter'],
+  ];
+
+  return (
+    <section className="pulse-ribbon" aria-label="Social media platforms">
+      <div className="pulse-ribbon-track">
+        {[...items, ...items].map(([icon, name], index) => (
+          <span key={`${name}-${index}`}><i className={icon} />{name}<b>✦</b></span>
+        ))}
+      </div>
+    </section>
   );
 }
 
@@ -49,134 +61,92 @@ export default async function HomePage({ searchParams }) {
   const title = settings.website_title || 'Boost My Social';
   const tagline = settings.website_tagline || 'Social growth, made louder.';
   const primaryHref = user ? '/dashboard' : '/signup';
-  const primaryLabel = user ? 'Open my dashboard' : 'Start boosting';
+  const primaryLabel = user ? 'Open dashboard' : 'Get started';
 
   return (
-    <main className="social-home" id="home">
+    <main className="pulse-home" id="home">
       {params?.subscribed ? (
-        <div className="social-alert-wrap"><div className="alert alert-success mb-0">You&apos;re on the list. Fresh panel updates are headed your way.</div></div>
+        <div className="pulse-alert-wrap"><div className="alert alert-success mb-0">Thanks — you&apos;re signed up for updates.</div></div>
       ) : null}
 
-      <section className="social-hero" aria-labelledby="hero-heading">
-        <FloatingSocialIcons className="social-float-field--hero" />
-        <div className="social-hero-copy">
-          <p className="social-eyebrow"><span className="social-eyebrow-dot" />SOCIAL MEDIA SERVICES</p>
-          <h1 id="hero-heading">Grow your <span>socials.</span></h1>
-          <p className="social-hero-tagline">{tagline}</p>
-          <p className="social-hero-lede">{title} makes it easy to order social media services and track every order in one place.</p>
-          <div className="social-hero-actions">
-            <Link className="social-action social-action--primary" href={primaryHref}><i className="fe fe-zap" />{primaryLabel}</Link>
-            <Link className="social-action social-action--ghost" href="/services">Browse services <i className="fe fe-arrow-up-right" /></Link>
+      <section className="pulse-hero" aria-labelledby="hero-heading">
+        <div className="pulse-hero-background" aria-hidden="true"><span>POST</span><span>POP</span><span>POST</span></div>
+        <HeroStickers />
+        <div className="pulse-hero-copy">
+          <p className="pulse-kicker"><span />SOCIAL MEDIA SERVICES</p>
+          <h1 id="hero-heading">Make every <em>post</em> pop.</h1>
+          <p className="pulse-hero-tagline">{tagline}</p>
+          <p className="pulse-hero-lede">Pick a service, add your link, and track your order in one place.</p>
+          <div className="pulse-hero-actions">
+            <Link href={primaryHref} className="pulse-action pulse-action--main"><i className="fe fe-zap" />{primaryLabel}</Link>
+            <Link href="/services" className="pulse-action pulse-action--plain">Browse services <i className="fe fe-arrow-up-right" /></Link>
           </div>
-          <div className="social-hero-note"><span><i className="fe fe-check" /></span>Start right away · no email verification</div>
+          <p className="pulse-hero-note"><i className="fe fe-check" /> Start right away. No email verification.</p>
         </div>
 
-        <div className="social-hero-stage" aria-label="Social campaign dashboard preview">
-          <div className="social-stage-spark social-stage-spark--one" aria-hidden="true" />
-          <div className="social-stage-spark social-stage-spark--two" aria-hidden="true" />
-          <div className="social-phone-card">
-            <div className="social-phone-topbar"><span className="social-phone-dots"><i /><i /><i /></span><span>social update</span><i className="fe fe-more-horizontal" /></div>
-            <div className="social-phone-profile">
-              <span className="social-profile-avatar"><i className="fa fa-instagram" /></span>
-              <div><b>Instagram order</b><small>Active now</small></div>
-              <span className="social-live-pill">LIVE</span>
+        <div className="pulse-hero-collage" aria-label="Social order preview">
+          <article className="pulse-post-card">
+            <div className="pulse-post-head">
+              <span className="pulse-post-avatar"><i className="fa fa-instagram" /></span>
+              <span><b>your.next.post</b><small>Just now</small></span>
+              <i className="fe fe-more-horizontal" />
             </div>
-            <div className="social-phone-post">
-              <div className="social-post-orbit"><i className="fa fa-instagram" /><span>+</span></div>
-              <div className="social-post-wave"><i /><i /><i /><i /><i /><i /><i /></div>
-              <span className="social-post-caption">Your post is growing</span>
+            <div className="pulse-post-art">
+              <span className="pulse-post-grid" />
+              <span className="pulse-post-platform"><i className="fa fa-instagram" /></span>
+              <span className="pulse-post-caption">new post<br />energy ✦</span>
+              <span className="pulse-post-scribble">♥</span>
             </div>
-            <div className="social-post-stats">
-              <span><i className="fe fe-heart" /> 12.8K</span>
-              <span><i className="fe fe-message-circle" /> 1.4K</span>
-              <span><i className="fe fe-send" /> 3.2K</span>
-            </div>
-            <div className="social-phone-progress"><span /><span /><span /><span /><span /></div>
+            <div className="pulse-post-metrics"><span><i className="fe fe-heart" />12.8K</span><span><i className="fe fe-message-circle" />1.4K</span><span><i className="fe fe-send" />3.2K</span></div>
+          </article>
+          <div className="pulse-order-ticket">
+            <span className="pulse-ticket-pin" aria-hidden="true" />
+            <small>ORDER READY</small>
+            <b>Instagram Reel Views</b>
+            <div><span>Link added</span><i className="fe fe-check" /></div>
+            <div><span>Quantity set</span><i className="fe fe-check" /></div>
           </div>
-          <div className="social-mini-card social-mini-card--growth"><span className="social-mini-icon"><i className="fa fa-youtube-play" /></span><div><small>YouTube</small><b>+4.8K views</b></div></div>
-          <div className="social-mini-card social-mini-card--audience"><span className="social-mini-icon"><i className="fa fa-facebook" /></span><div><small>Facebook</small><b>Growing now</b></div></div>
-          <span className="social-stage-sticker social-stage-sticker--tiktok"><i className="fa fa-music" /></span>
-          <span className="social-stage-sticker social-stage-sticker--twitter"><i className="fa fa-twitter" /></span>
+          <div className="pulse-growth-bubble"><span>+4.8K</span><small>views today</small></div>
+          <span className="pulse-collage-tag">IT&apos;S YOUR<br />TURN →</span>
         </div>
       </section>
 
-      <section className="social-platform-strip" aria-label="Supported social platforms">
-        <div className="social-platform-track">
-          <span><i className="fa fa-instagram" />Instagram</span>
-          <span><i className="fa fa-youtube-play" />YouTube</span>
-          <span><i className="fa fa-music" />TikTok</span>
-          <span><i className="fa fa-facebook" />Facebook</span>
-          <span><i className="fa fa-twitter" />X / Twitter</span>
-          <span><i className="fa fa-soundcloud" />SoundCloud</span>
-        </div>
+      <PlatformRibbon />
+
+      <section className="pulse-intro" id="method">
+        <p className="pulse-kicker">SIMPLE BY DESIGN</p>
+        <h2>Less guessing. <span>More doing.</span></h2>
+        <p>{title} keeps your social media orders clear, quick, and easy to follow.</p>
       </section>
 
-      <section className="social-section social-intro" id="method">
-        <div className="social-section-heading">
-          <p className="social-eyebrow">SIMPLE AND CLEAR</p>
-          <h2>Everything you need in one place.</h2>
-          <p>Choose a service, add your link, and follow your order from one simple dashboard.</p>
-        </div>
-        <div className="social-intro-visual" aria-hidden="true">
-          <FloatingSocialIcons className="social-float-field--intro" />
-          <div className="social-thread social-thread--one" />
-          <div className="social-thread social-thread--two" />
-          <div className="social-thread-dot social-thread-dot--one" />
-          <div className="social-thread-dot social-thread-dot--two" />
-          <div className="social-thread-dot social-thread-dot--three" />
-          <span className="social-intro-center"><i className="fe fe-zap" /></span>
-        </div>
-      </section>
+      <PlatformPlayground />
 
-      <section className="social-section social-growth-section">
-        <div className="social-growth-heading">
-          <p className="social-eyebrow">CHOOSE YOUR PLATFORM</p>
-          <h2>Popular services, made simple.</h2>
+      <section className="pulse-steps" aria-labelledby="steps-heading">
+        <div className="pulse-section-heading">
+          <p className="pulse-kicker">HOW IT WORKS</p>
+          <h2 id="steps-heading">Three easy steps.</h2>
+          <p>No complicated setup. Start when you are ready.</p>
         </div>
-        <div className="social-growth-grid">
-          {GROWTH_MODES.map((mode) => (
-            <article className={`social-growth-card social-growth-card--${mode.tone}`} key={mode.title}>
-              <span className="social-growth-icon"><i className={mode.icon} /></span>
-              <h3>{mode.title}</h3>
-              <p>{mode.text}</p>
-              <Link href="/services">See services <i className="fe fe-arrow-up-right" /></Link>
+        <div className="pulse-step-grid">
+          {SIMPLE_STEPS.map(([number, title, text, icon]) => (
+            <article className="pulse-step" key={number}>
+              <span className="pulse-step-number">{number}</span>
+              <span className="pulse-step-icon"><i className={icon} /></span>
+              <h3>{title}</h3>
+              <p>{text}</p>
             </article>
           ))}
         </div>
       </section>
 
-      <section className="social-section social-workflow-section">
-        <div className="social-workflow-visual" aria-hidden="true">
-          <div className="social-workflow-ring social-workflow-ring--one" />
-          <div className="social-workflow-ring social-workflow-ring--two" />
-          <span className="social-workflow-core"><i className="fe fe-zap" /></span>
-          <span className="social-workflow-icon social-workflow-icon--one"><i className="fa fa-instagram" /></span>
-          <span className="social-workflow-icon social-workflow-icon--two"><i className="fa fa-youtube-play" /></span>
-          <span className="social-workflow-icon social-workflow-icon--three"><i className="fa fa-facebook" /></span>
-          <span className="social-workflow-icon social-workflow-icon--four"><i className="fa fa-music" /></span>
+      <section className="pulse-faq" id="faq">
+        <div className="pulse-faq-copy">
+          <p className="pulse-kicker">NEED HELP?</p>
+          <h2>We keep it simple.</h2>
+          <p>Here are a few quick answers before you start.</p>
+          <Link href="/faq" className="pulse-link">View all FAQ <i className="fe fe-arrow-up-right" /></Link>
         </div>
-        <div className="social-workflow-copy">
-          <p className="social-eyebrow">HOW IT WORKS</p>
-          <h2>Four easy steps.</h2>
-          <div className="social-steps">
-            {STEPS.map(([number, title, text]) => (
-              <article key={number}>
-                <span>{number}</span>
-                <div><h3>{title}</h3><p>{text}</p></div>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="social-section social-faq-section" id="faq">
-        <div className="social-faq-copy">
-          <p className="social-eyebrow">NEED HELP?</p>
-          <h2>Common questions.</h2>
-          <p>Find quick answers below, or visit the FAQ for more help.</p>
-          <Link href="/faq" className="social-action social-action--ghost">View FAQ <i className="fe fe-arrow-up-right" /></Link>
-        </div>
-        <div className="social-faq-list">
+        <div className="pulse-faq-list">
           {FAQS.map(([question, answer], index) => (
             <details key={question}>
               <summary><span>0{index + 1}</span>{question}<i className="fe fe-plus" /></summary>
@@ -186,13 +156,13 @@ export default async function HomePage({ searchParams }) {
         </div>
       </section>
 
-      <section className="social-final-cta">
-        <FloatingSocialIcons className="social-float-field--final" />
+      <section className="pulse-end">
+        <HeroStickers />
         <div>
-          <p className="social-eyebrow">READY TO START?</p>
-          <h2>Start growing today.</h2>
+          <p className="pulse-kicker">READY TO START?</p>
+          <h2>Give your next post a push.</h2>
           <p>Choose a service and place your first order today.</p>
-          <Link className="social-action social-action--primary" href={primaryHref}><i className="fe fe-zap" />{primaryLabel}</Link>
+          <Link href={primaryHref} className="pulse-action pulse-action--main"><i className="fe fe-zap" />{primaryLabel}</Link>
         </div>
       </section>
     </main>

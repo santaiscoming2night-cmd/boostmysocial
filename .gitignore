@@ -1,0 +1,13 @@
+node_modules/
+.next/
+out/
+.env
+.env.local
+.env*.local
+*.zip
+.vercel
+.DS_Store
+npm-debug.log*
+
+# generated legacy import (contains password hashes)
+scripts/output/

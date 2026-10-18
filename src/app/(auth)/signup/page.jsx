@@ -6,7 +6,7 @@ import { signUp } from '@/app/actions/auth';
 import { getSettings, settingOn } from '@/lib/settings';
 import { getSessionUser } from '@/lib/auth';
 
-export const metadata = { title: 'Sign up' };
+export const metadata = { title: 'Create access' };
 export const dynamic = 'force-dynamic';
 
 export default async function SignupPage({ searchParams }) {
@@ -17,10 +17,10 @@ export default async function SignupPage({ searchParams }) {
     return (
       <div className="row justify-content-center">
         <div className="col-md-6 col-lg-5">
-          <div className="card p-4 text-center">
-            <h3 className="card-title">Sign up is disabled</h3>
-            <p className="text-muted">Registration is currently closed. Please contact support.</p>
-            <Link href="/login" className="btn btn-primary">Back to login</Link>
+          <div className="card text-center">
+            <h1 className="card-title">Access is paused.</h1>
+            <p className="nova-auth-subtitle">New workspace creation is currently closed. Please contact support if you need help.</p>
+            <Link href="/login" className="btn">Back to sign in</Link>
           </div>
         </div>
       </div>
@@ -30,41 +30,42 @@ export default async function SignupPage({ searchParams }) {
   return (
     <div className="row justify-content-center">
       <div className="col-md-7 col-lg-6">
-        <div className="card p-4">
-          <h3 className="card-title text-center mb-4">Create your account</h3>
+        <div className="card">
+          <h1 className="card-title">Create your access.</h1>
+          <p className="nova-auth-subtitle">Set up your command center in a moment. No confirmation-email queue—your workspace opens right after creation.</p>
           <Flash ok={params.ok} err={params.err} />
           <form action={signUp}>
             <div className="row">
               <div className="col-md-6">
                 <div className="form-group">
-                  <label className="form-label">First name</label>
-                  <input name="first_name" className="form-control" required />
+                  <label className="form-label" htmlFor="first_name">First name</label>
+                  <input id="first_name" name="first_name" className="form-control" required autoComplete="given-name" />
                 </div>
               </div>
               <div className="col-md-6">
                 <div className="form-group">
-                  <label className="form-label">Last name</label>
-                  <input name="last_name" className="form-control" required />
+                  <label className="form-label" htmlFor="last_name">Last name</label>
+                  <input id="last_name" name="last_name" className="form-control" required autoComplete="family-name" />
                 </div>
               </div>
             </div>
             <div className="form-group">
-              <label className="form-label">Email</label>
-              <input type="email" name="email" className="form-control" required />
+              <label className="form-label" htmlFor="signup_email">Email address</label>
+              <input id="signup_email" type="email" name="email" className="form-control" placeholder="you@example.com" required autoComplete="email" />
             </div>
             <div className="form-group">
-              <label className="form-label">Password</label>
-              <input type="password" name="password" className="form-control" minLength={8} required />
+              <label className="form-label" htmlFor="signup_password">Password</label>
+              <input id="signup_password" type="password" name="password" className="form-control" placeholder="At least 8 characters" minLength={8} required autoComplete="new-password" />
             </div>
             <div className="form-group">
-              <label className="form-label">Confirm password</label>
-              <input type="password" name="confirm_password" className="form-control" minLength={8} required />
+              <label className="form-label" htmlFor="confirm_password">Confirm password</label>
+              <input id="confirm_password" type="password" name="confirm_password" className="form-control" placeholder="Repeat your password" minLength={8} required autoComplete="new-password" />
             </div>
             <input type="hidden" name="timezone" value="UTC" />
-            <SubmitButton className="btn btn-primary btn-block btn-lg" pendingText="Creating account…">Create account</SubmitButton>
+            <SubmitButton className="btn" pendingText="Opening workspace…">Create command center <i className="fe fe-zap" /></SubmitButton>
           </form>
           <div className="text-center mt-3">
-            <span className="text-muted">Already registered? </span>
+            <span className="text-muted">Already in the network? </span>
             <Link href="/login">Sign in</Link>
           </div>
         </div>

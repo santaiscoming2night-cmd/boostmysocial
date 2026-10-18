@@ -30,7 +30,7 @@ export default function ServicesBrowser({ categories, services, symbol = '$', si
 
   return (
     <>
-      <div className="card">
+      <div className="card nova-service-filter">
         <div className="card-body">
           <div className="row">
             <div className="col-md-5">
@@ -53,10 +53,10 @@ export default function ServicesBrowser({ categories, services, symbol = '$', si
       </div>
 
       {grouped.length === 0 ? (
-        <div className="card"><div className="card-body text-center text-muted py-5">No services match your search.</div></div>
+        <div className="card nova-service-empty"><div className="card-body text-center text-muted py-5">No services match your search.</div></div>
       ) : grouped.map(({ category: cat, rows }) => (
-        <div className="card" key={cat.id}>
-          <div className="card-header"><h3 className="card-title">{cat.name}</h3></div>
+        <div className="card nova-service-group" key={cat.id}>
+          <div className="card-header"><span className="nova-service-group-mark"><i className="fe fe-layers" /></span><h3 className="card-title">{cat.name}</h3><span className="nova-service-count">{rows.length} services</span></div>
           <div className="table-responsive">
             <table className="table card-table table-vcenter table-sm">
               <thead>

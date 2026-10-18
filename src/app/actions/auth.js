@@ -4,8 +4,9 @@ import { redirect } from 'next/navigation';
 import { headers } from 'next/headers';
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { getSettings, settingOn } from '@/lib/settings';
-import { hasSupabaseEnv } from '@/lib/supabase/env';
+import { hasServiceRole, hasSupabaseEnv } from '@/lib/supabase/env';
 
 async function siteUrl() {
   const configured = process.env.SITE_URL;
@@ -69,24 +70,45 @@ export async function signUp(formData) {
   if (password.length < 8) fail('/signup', 'Password must be at least 8 characters.');
   if (password !== confirm) fail('/signup', 'Passwords do not match.');
 
+  const metadata = { first_name, last_name, timezone };
   const supabase = await createClient();
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { first_name, last_name, timezone },
-      emailRedirectTo: `${await siteUrl()}/auth/callback?next=/dashboard`,
-    },
-  });
 
-  if (error) fail('/signup', error.message);
+  // A service-role key lets us mark a new address as confirmed at creation.
+  // This makes signup truly instant even if a hosted Supabase project still has
+  // "Confirm email" enabled. The key never leaves this server action.
+  if (hasServiceRole()) {
+    const admin = createAdminClient();
+    const { error } = await admin.auth.admin.createUser({
+      email,
+      password,
+      email_confirm: true,
+      user_metadata: metadata,
+    });
+    if (error) fail('/signup', error.message);
 
-  if (data.session) {
+    const { error: signInError } = await supabase.auth.signInWithPassword({ email, password });
+    if (signInError) fail('/login', signInError.message);
+
     revalidatePath('/', 'layout');
     redirect('/dashboard');
   }
 
-  redirect('/login?ok=' + encodeURIComponent('Account created. Check your email to confirm it, then sign in.'));
+  // Local Supabase configuration explicitly disables email confirmation. This
+  // fallback keeps that lightweight setup working when a service-role key is
+  // intentionally not provided to the application.
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: metadata },
+  });
+
+  if (error) fail('/signup', error.message);
+  if (!data.session) {
+    fail('/signup', 'Instant access is not enabled on this Supabase project. Turn off Confirm email or set SUPABASE_SERVICE_ROLE_KEY.');
+  }
+
+  revalidatePath('/', 'layout');
+  redirect('/dashboard');
 }
 
 export async function signOut() {

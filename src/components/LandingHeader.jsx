@@ -3,48 +3,55 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
+function Brand({ title }) {
+  return (
+    <Link className="nova-brand" href="/" aria-label={`${title} home`}>
+      <span className="nova-brand-mark" aria-hidden="true">✦</span>
+      <span className="nova-brand-name">{title}</span>
+    </Link>
+  );
+}
+
 export default function LandingHeader({ settings, user }) {
   const [open, setOpen] = useState(false);
+  const closeMenu = () => setOpen(false);
+  const title = settings.website_title || 'Boost My Social';
+
   return (
-    <header className="header fixed-top" id="headerNav">
-      <div className="container">
-        <nav className="navbar navbar-expand-lg">
-          <Link className="navbar-brand" href="/">
-            <img
-              className="site-logo d-none"
-              src={settings.website_logo || '/assets/images/logo.png'}
-              alt="Website logo"
-              onError={(event) => { event.currentTarget.src = '/assets/images/logo.png'; }}
-            />
-            <img
-              className="site-logo-white"
-              src={settings.website_logo_white || settings.website_logo || '/assets/images/logo-white.png'}
-              alt="Website logo"
-              onError={(event) => { event.currentTarget.src = '/assets/images/logo-white.png'; }}
-            />
-          </Link>
-          <button className="navbar-toggler" type="button" onClick={() => setOpen(!open)} aria-label="Toggle navigation">
-            <span><i className="fe fe-menu" /></span>
-          </button>
-          <div className={`collapse navbar-collapse ${open ? 'show' : ''}`}>
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item active"><a className="nav-link" href="/#home">Home</a></li>
-              <li className="nav-item"><a className="nav-link" href="/#services">What we offer</a></li>
-              <li className="nav-item"><Link className="nav-link" href="/services">Services</Link></li>
-              <li className="nav-item"><Link className="nav-link" href="/faq">FAQs</Link></li>
-            </ul>
-            <div className="nav-item d-md-flex btn-login-signup">
-              {user ? (
-                <Link href="/dashboard" className="btn btn-pill btn-outline-primary sign-up">Dashboard</Link>
-              ) : (
-                <>
-                  <Link className="link btn-login" href="/login">Login</Link>
-                  <Link href="/signup" className="btn btn-pill btn-outline-primary sign-up">Sign Up</Link>
-                </>
-              )}
-            </div>
-          </div>
+    <header className="nova-header">
+      <div className="nova-header-inner">
+        <Brand title={title} />
+        <button
+          className="nova-menu-toggle"
+          type="button"
+          onClick={() => setOpen((value) => !value)}
+          aria-expanded={open}
+          aria-controls="nova-main-navigation"
+          aria-label="Toggle navigation"
+        >
+          <i className={open ? 'fe fe-x' : 'fe fe-menu'} aria-hidden="true" />
+        </button>
+        <nav id="nova-main-navigation" className={`nova-header-nav ${open ? 'open' : ''}`} aria-label="Main navigation">
+          <a href="/#home" onClick={closeMenu}>Home</a>
+          <a href="/#network" onClick={closeMenu}>Network</a>
+          <Link href="/services" onClick={closeMenu}>Services</Link>
+          <Link href="/news" onClick={closeMenu}>Updates</Link>
+          <Link href="/faq" onClick={closeMenu}>FAQ</Link>
         </nav>
+        <div className="nova-header-actions">
+          {user ? (
+            <Link href="/dashboard" className="nova-btn nova-header-cta">
+              <i className="fe fe-grid" aria-hidden="true" /> Panel
+            </Link>
+          ) : (
+            <>
+              <Link className="nova-header-login" href="/login">Sign in</Link>
+              <Link href="/signup" className="nova-btn nova-header-cta">
+                <i className="fe fe-zap" aria-hidden="true" /> Start now
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );

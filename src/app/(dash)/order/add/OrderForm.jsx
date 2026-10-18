@@ -80,7 +80,7 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
         </div>
       ) : null}
 
-      <form className="form" onSubmit={submit}>
+      <form className="form nova-order-form" onSubmit={submit}>
         <div className="row">
           <div className="col-md-6">
             <div className="content-header-title"><h4><i className="fa fa-shopping-cart mr-2" />New order</h4></div>

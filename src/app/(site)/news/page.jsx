@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { dateOnly } from '@/lib/format';
 
-export const metadata = { title: 'News & announcements' };
+export const metadata = { title: 'Network updates' };
 export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
@@ -10,18 +10,22 @@ export default async function NewsPage() {
 
   return (
     <section className="pt-90 pb-90">
-      <div className="container">
+      <div className="container nova-public-page">
         <div className="row justify-content-center">
           <div className="col-lg-9">
-            <h1 className="mb-4">News &amp; announcements</h1>
-            {(news || []).length === 0 ? <p className="text-muted">Nothing published yet.</p> : null}
+            <div className="nova-section-heading mb-5">
+              <p className="nova-kicker">Network updates</p>
+              <h1>What&apos;s moving.</h1>
+              <p>Release notes, service news, and panel updates from the network.</p>
+            </div>
+            {(news || []).length === 0 ? <p className="text-muted">Nothing has been published yet. Check back when the signal changes.</p> : null}
             {(news || []).map((item) => (
-              <div className="card mb-3" key={item.id}>
+              <article className="card nova-news-card" key={item.id}>
                 <div className="card-body">
-                  <div className="text-muted small mb-2">{dateOnly(item.created_at)}</div>
+                  <div className="nova-news-date"><span className="nova-live-dot" />{dateOnly(item.created_at)}</div>
                   <div style={{ whiteSpace: 'pre-wrap' }}>{item.description}</div>
                 </div>
-              </div>
+              </article>
             ))}
           </div>
         </div>

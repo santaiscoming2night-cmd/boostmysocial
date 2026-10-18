@@ -148,14 +148,13 @@ In the Supabase dashboard:
      - `https://your-preview-domain.vercel.app/auth/callback` if you use Vercel preview deployments
 2. **Authentication → Providers → Email**
    - Keep Email enabled. Email + password is the only sign-in method the panel uses.
-   - **Confirm email**: on for production. Turn it off while testing if you do not want to wait for mail.
+   - **Confirm email**: **off**. New accounts are intentionally created with instant access; the panel does not put users through an email-verification step.
 3. **Authentication → Emails / SMTP**
-   - Supabase's built-in mail service is rate-limited and meant for testing.
-   - For production, configure your own SMTP provider (Resend, Postmark, SES, Mailgun, …) under **Authentication → Emails → SMTP settings**.
+   - SMTP is only needed for password-recovery emails. Configure your own provider (Resend, Postmark, SES, Mailgun, …) if you want production password resets.
 
-Password reset and signup confirmation links are routed through `/auth/callback`, which exchanges the code for a session and then sends the user to the dashboard or reset form.
+Password-reset links are routed through `/auth/callback`, which exchanges the code for a session and then sends the user to the reset form. When `SUPABASE_SERVICE_ROLE_KEY` is present, the signup action explicitly marks a new email as confirmed so instant access still works if the hosted project's setting was missed.
 
-If `SITE_URL` is not set, the app derives the callback origin from the incoming request, so emails still work — but setting it explicitly is strongly recommended.
+If `SITE_URL` is not set, the app derives the callback origin from the incoming request, so password recovery emails still work — but setting it explicitly is strongly recommended.
 
 ## 4. Environment variables
 
@@ -239,7 +238,7 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 - [ ] Landing page loads with your logo and no yellow "Supabase is not configured" banner.
 - [ ] `/faq` and `/page/terms` render seeded content; `/news` loads (empty until you publish something).
 - [ ] `/services` lists the catalogue (public by default; change in Admin → Settings).
-- [ ] Signup → confirmation email → login works.
+- [ ] Signup opens the dashboard immediately, with no confirmation-email step.
 - [ ] Admin can open `/admin/orders`, `/admin/users`, `/admin/deposits`.
 - [ ] Placing an order deducts the balance and writes a transaction record.
 - [ ] Requesting a deposit creates a pending request; approving it credits the balance exactly once.
@@ -433,7 +432,7 @@ Deliberate differences:
 - **Payments** — the old install embedded live gateway keys. Here the default flow is **manual deposit → admin approval**. `payment_methods` rows exist for Paystack, PayPal and Stripe (disabled, empty keys) so a gateway can be added later.
 - **Upstream providers** — the PHP panel used cron workers to forward orders to providers. This build stores orders as `pending` and lets you manage them in **Admin → Orders**, or update them from your own worker.
 - **Not re-implemented** — mass orders, dripfeed/subscription creation forms, the file manager, the translation editor, the module marketplace and the `monoka`/`pergo` themes. Their database fields and listing screens remain where relevant.
-- **Email** — sent by Supabase Auth rather than the panel's SMTP class, so signup confirmation and password reset live in Supabase.
+- **Email** — Supabase Auth is used only for password recovery. Signup is immediate and does not require email confirmation.
 
 ## Troubleshooting
 
@@ -441,7 +440,7 @@ Deliberate differences:
 |---|---|
 | Yellow "Supabase is not configured" banner | `SUPABASE_URL` / `SUPABASE_ANON_KEY` are missing. Restart `npm run dev` after editing `.env`. |
 | Site shows the default logo and title | `SUPABASE_SERVICE_ROLE_KEY` is missing, so settings cannot be read, or `0004_seed.sql` was not applied. |
-| Signup succeeds but no email arrives | Supabase's built-in mail is rate-limited. Configure SMTP, check spam, or disable "Confirm email" while testing. |
+| Signup reports that instant access is unavailable | Turn off **Confirm email** in Supabase Auth, or configure `SUPABASE_SERVICE_ROLE_KEY` so the server can create confirmed accounts. |
 | Login redirects back to `/login` | Site URL / redirect URLs in Supabase do not match the domain. Update them and clear cookies. |
 | `/admin/*` redirects to the dashboard | The account's `profiles.role` is `user`. Promote it with the SQL in [First administrator](#6-first-administrator). |
 | `/page/terms` returns 404 | `0004_seed.sql` has not run, or the page's `status` is `0` in **Admin → Content**. |

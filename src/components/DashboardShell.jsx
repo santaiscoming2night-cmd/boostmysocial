@@ -4,28 +4,43 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-function Item({ href, icon, label, active, badge }) {
+function NavItem({ href, icon, label, active, badge, onNavigate }) {
   return (
-    <li className="nav-item">
-      <Link href={href} className={`nav-link ${active ? 'active' : ''}`}>
-        <i className={icon} /> {label}
-        {badge ? <span className="badge badge-info ml-1">{badge}</span> : null}
-      </Link>
-    </li>
+    <Link href={href} className={`nova-nav-link ${active ? 'active' : ''}`} onClick={onNavigate}>
+      <i className={icon} aria-hidden="true" />
+      <span>{label}</span>
+      {badge ? <span className="nova-nav-count">{badge}</span> : null}
+    </Link>
   );
 }
 
-function Dropdown({ icon, label, active, children }) {
-  const [open, setOpen] = useState(false);
+function NavGroup({ icon, label, active, items, path, onNavigate }) {
+  const [open, setOpen] = useState(active);
   return (
-    <li className={`nav-item dropdown ${open ? 'show' : ''}`}>
-      <button type="button" className={`nav-link ${active ? 'active' : ''} btn btn-link p-0`} onClick={() => setOpen(!open)}>
-        <i className={icon} /> {label}
+    <div className="nova-nav-group">
+      <button
+        type="button"
+        className={`nova-nav-trigger ${active ? 'active' : ''}`}
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        <i className={icon} aria-hidden="true" />
+        <span>{label}</span>
+        <i className="fe fe-chevron-down nova-nav-chevron" aria-hidden="true" />
       </button>
-      <div className={`dropdown-menu dropdown-menu-arrow ${open ? 'show' : ''}`} onClick={() => setOpen(false)}>
-        {children}
+      <div className={`nova-subnav ${open ? 'open' : ''}`}>
+        {items.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={path === item.href || path.startsWith(`${item.href}/`) ? 'active' : ''}
+            onClick={onNavigate}
+          >
+            {item.label}
+          </Link>
+        ))}
       </div>
-    </li>
+    </div>
   );
 }
 
@@ -33,108 +48,141 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
   const path = usePathname() || '';
   const [menu, setMenu] = useState(false);
   const isAdmin = user.role === 'admin';
-  const balance = Number(user.balance || 0).toFixed(Number(settings.currency_decimal || 2));
-  const segment = (p) => path === p || path.startsWith(p + '/');
+  const rawBalance = Number(user.balance || 0);
+  const balance = Number.isFinite(rawBalance) ? rawBalance.toFixed(Number(settings.currency_decimal || 2)) : '0.00';
+  const segment = (route) => path === route || path.startsWith(`${route}/`);
+  const closeMenu = () => setMenu(false);
+  const firstName = user.first_name || 'Operator';
+  const initials = `${user.first_name?.[0] || 'O'}${user.last_name?.[0] || ''}`.toUpperCase();
+  const accountLabel = isAdmin ? 'System operator' : `${settings.currency_symbol || '$'}${balance} available`;
+
+  const orderItems = [
+    { href: '/order/log', label: 'Order history' },
+    { href: '/dripfeed', label: 'Drip-feed' },
+    { href: '/subscriptions', label: 'Subscriptions' },
+  ];
+  const managerItems = [
+    { href: '/admin/users', label: 'Users' },
+    { href: '/admin/subscribers', label: 'Subscribers' },
+    { href: '/admin/deposits', label: 'Add funds' },
+  ];
+  const systemItems = [
+    { href: '/admin/settings', label: 'Settings' },
+    { href: '/admin/providers', label: 'API providers' },
+    { href: '/admin/deposits', label: 'Payments' },
+    { href: '/admin/orders', label: 'All orders' },
+    { href: '/admin/content', label: 'Content studio' },
+    { href: '/admin/services', label: 'Services' },
+    { href: '/admin/categories', label: 'Categories' },
+    { href: '/admin/tickets', label: 'Tickets' },
+  ];
 
   return (
-    <>
-      <div className="header top py-4">
-        <div className="container">
-          <div className="d-flex">
-            <Link href="/dashboard">
-              <img src={settings.website_logo_white || '/assets/images/logo-white.png'} alt="Website logo" style={{ maxHeight: 40 }} />
+    <div className={`nova-dashboard ${menu ? 'mobile-open' : ''}`}>
+      {menu ? <button className="nova-sidebar-backdrop" type="button" aria-label="Close navigation" onClick={closeMenu} /> : null}
+      <aside className={`nova-sidebar ${menu ? 'mobile-open' : ''}`} aria-label="Panel navigation">
+        <div className="nova-sidebar-brand">
+          <Link href="/dashboard" className="nova-brand" onClick={closeMenu} aria-label={`${settings.website_title || 'Boost My Social'} dashboard`}>
+            <span className="nova-brand-mark" aria-hidden="true">✦</span>
+            <span className="nova-brand-name">{settings.website_title || 'Boost My Social'}</span>
+          </Link>
+        </div>
+
+        <p className="nova-sidebar-caption">Control room</p>
+        <nav className="nova-dashboard-nav">
+          <NavItem href="/dashboard" icon="fe fe-grid" label="Overview" active={segment('/dashboard')} onNavigate={closeMenu} />
+          <NavItem href="/order/add" icon="fe fe-zap" label="Launch order" active={segment('/order/add')} onNavigate={closeMenu} />
+          <NavGroup
+            icon="fe fe-layers"
+            label="Campaigns"
+            active={segment('/order/log') || segment('/dripfeed') || segment('/subscriptions')}
+            items={orderItems}
+            path={path}
+            onNavigate={closeMenu}
+          />
+          <NavItem href="/services" icon="fe fe-compass" label="Service catalog" active={segment('/services')} onNavigate={closeMenu} />
+          {settings.enable_api_tab === '1' && !isAdmin ? <NavItem href="/api/docs" icon="fe fe-code" label="API studio" active={segment('/api/docs')} onNavigate={closeMenu} /> : null}
+          <NavItem href="/tickets" icon="fe fe-message-circle" label="Support" badge={unreadTickets || null} active={segment('/tickets')} onNavigate={closeMenu} />
+          {!isAdmin ? <NavItem href="/add-funds" icon="fe fe-credit-card" label="Add funds" active={segment('/add-funds')} onNavigate={closeMenu} /> : null}
+          <NavItem href="/transactions" icon="fe fe-clock" label="Activity log" active={segment('/transactions')} onNavigate={closeMenu} />
+
+          {isAdmin ? (
+            <>
+              <p className="nova-sidebar-caption" style={{ marginTop: 15 }}>Administration</p>
+              <NavGroup
+                icon="fe fe-users"
+                label="People"
+                active={segment('/admin/users') || segment('/admin/subscribers') || segment('/admin/deposits')}
+                items={managerItems}
+                path={path}
+                onNavigate={closeMenu}
+              />
+              <NavGroup
+                icon="fe fe-sliders"
+                label="System studio"
+                active={segment('/admin/settings') || segment('/admin/providers') || segment('/admin/orders') || segment('/admin/content') || segment('/admin/services') || segment('/admin/categories') || segment('/admin/tickets')}
+                items={systemItems}
+                path={path}
+                onNavigate={closeMenu}
+              />
+            </>
+          ) : null}
+        </nav>
+
+        <div className="nova-sidebar-bottom">
+          {!isAdmin ? (
+            <div className="nova-balance-clay">
+              <span>Ready balance</span>
+              <b>{settings.currency_symbol || '$'}{balance}</b>
+              <Link href="/add-funds" onClick={closeMenu}><i className="fe fe-plus-circle" /> Add funds</Link>
+            </div>
+          ) : null}
+          <div className="nova-side-user">
+            <Link href="/profile" className="d-flex align-items-center min-width-0" onClick={closeMenu}>
+              <span className="nova-avatar">{initials}</span>
+              <span className="ml-2">
+                <b>{firstName}</b>
+                <span>{accountLabel}</span>
+              </span>
             </Link>
-            <div className="d-flex order-lg-2 ml-auto my-auto">
-              <div className="dropdown show">
-                <Link href="/profile" className="nav-link pr-0 leading-none">
-                  <span className="avatar" style={{ backgroundImage: 'url(/assets/images/user-avatar.png)' }} />
-                  <span className="ml-2 d-none d-lg-block">
-                    <span className="text-default text-white">Hi, <span className="text-uppercase">{user.first_name || 'User'}</span>!</span>
-                    <small className="text-muted text-white d-block mt-1">
-                      {isAdmin ? 'Admin account' : `Balance: ${settings.currency_symbol}${balance}`}
-                    </small>
-                  </span>
-                </Link>
-              </div>
-              <Link href="/logout" className="nav-link text-white ml-3" title="Sign out"><i className="fe fe-log-out" /></Link>
-              <button type="button" className="header-toggler text-white d-lg-none ml-3 my-auto" onClick={() => setMenu(!menu)}>
-                <span className="header-toggler-icon" />
-              </button>
-            </div>
+            <Link href="/logout" className="nova-signout" title="Sign out" aria-label="Sign out"><i className="fe fe-log-out" /></Link>
           </div>
         </div>
-      </div>
+      </aside>
 
-      <div className={`header collapse d-lg-flex p-0 ${menu ? 'show' : ''}`}>
-        <div className="container">
-          <div className="row align-items-center">
-            <div className="col-lg order-lg-first">
-              <ul className="nav nav-tabs border-0 flex-column flex-lg-row">
-                <Item href="/dashboard" icon="fe fe-bar-chart-2" label="Statistics" active={segment('/dashboard')} />
-                <Item href="/order/add" icon="fe fe-shopping-cart" label="New order" active={segment('/order/add')} />
-                <Dropdown icon="fe fe-inbox" label="Order" active={segment('/order/log') || segment('/dripfeed') || segment('/subscriptions')}>
-                  <Link href="/order/log" className="dropdown-item">Order logs</Link>
-                  <Link href="/dripfeed" className="dropdown-item">Dripfeed</Link>
-                  <Link href="/subscriptions" className="dropdown-item">Subscriptions</Link>
-                </Dropdown>
-                <Item href="/services" icon="fe fe-list" label="Services" active={segment('/services')} />
-                {settings.enable_api_tab === '1' && !isAdmin ? (
-                  <Item href="/api/docs" icon="fe fe-share-2" label="API" active={segment('/api/docs')} />
-                ) : null}
-                <Item href="/tickets" icon="fa fa-comments-o" label="Support" badge={unreadTickets || null} active={segment('/tickets')} />
-                {!isAdmin ? <Item href="/add-funds" icon="fa fa-money" label="Add funds" active={segment('/add-funds')} /> : null}
-                <Item href="/transactions" icon="fe fe-calendar" label="Transaction logs" active={segment('/transactions')} />
-                {isAdmin ? (
-                  <>
-                    <Dropdown icon="fe fe-users" label="User manager" active={segment('/admin/users') || segment('/admin/subscribers')}>
-                      <Link href="/admin/users" className="dropdown-item">Users</Link>
-                      <Link href="/admin/subscribers" className="dropdown-item">Subscribers</Link>
-                      <div className="dropdown-divider" />
-                      <Link href="/admin/deposits" className="dropdown-item">Add funds</Link>
-                    </Dropdown>
-                    <Dropdown icon="fe fe-settings" label="System settings" active={segment('/admin/settings') || segment('/admin/services') || segment('/admin/categories') || segment('/admin/content') || segment('/admin/providers') || segment('/admin/tickets') || segment('/admin/orders')}>
-                      <Link href="/admin/settings" className="dropdown-item">Settings</Link>
-                      <Link href="/admin/providers" className="dropdown-item">API providers</Link>
-                      <Link href="/admin/deposits" className="dropdown-item">Payments</Link>
-                      <Link href="/admin/orders" className="dropdown-item">All orders</Link>
-                      <div className="dropdown-divider" />
-                      <Link href="/admin/content" className="dropdown-item">News / FAQs / Pages</Link>
-                      <Link href="/admin/services" className="dropdown-item">Services</Link>
-                      <Link href="/admin/categories" className="dropdown-item">Categories</Link>
-                      <Link href="/admin/tickets" className="dropdown-item">Tickets</Link>
-                    </Dropdown>
-                  </>
-                ) : null}
-              </ul>
-            </div>
+      <main className="nova-dashboard-main">
+        <header className="nova-dashboard-topbar">
+          <div className="nova-topbar-status">
+            <button className="nova-mobile-toggle" type="button" onClick={() => setMenu((value) => !value)} aria-label="Toggle navigation" aria-expanded={menu}>
+              <i className={menu ? 'fe fe-x' : 'fe fe-menu'} />
+            </button>
+            <span><span className="nova-live-dot" />WORKSPACE</span>
+            <b>Ready for your next move</b>
           </div>
-        </div>
-      </div>
+          <div className="nova-topbar-right">
+            <span className="nova-topbar-date">{isAdmin ? 'System control' : 'Growth control'}</span>
+            <Link href="/profile" className="nova-topbar-profile">
+              <span className="nova-avatar">{initials}</span>
+              <span>{firstName}</span>
+            </Link>
+          </div>
+        </header>
 
-      <div className="page">
-        <div className="page-main">
-          <div className="my-3 my-md-5">
-            <div className={`container ${path.startsWith('/services') || path.startsWith('/order/log') ? 'container-wide' : ''}`}>
-              {children}
-            </div>
+        <div className="nova-dashboard-content">
+          <div className={path.startsWith('/services') || path.startsWith('/order/log') ? 'container container-wide' : 'container'}>
+            {children}
           </div>
         </div>
-        <footer className="footer">
-          <div className="container">
-            <div className="row align-items-center flex-row-reverse">
-              <div className="col-auto ml-lg-auto">
-                <ul className="list-inline mb-0">
-                  <li className="list-inline-item"><Link href="/faq">FAQs</Link></li>
-                  <li className="list-inline-item"><Link href="/page/terms">Terms</Link></li>
-                </ul>
-              </div>
-              <div className="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
-                <span dangerouslySetInnerHTML={{ __html: settings.copy_right_content || '' }} />
-              </div>
-            </div>
-          </div>
+
+        <footer className="nova-dashboard-footer">
+          <span dangerouslySetInnerHTML={{ __html: settings.copy_right_content || '' }} />
+          <nav className="nova-dashboard-footer-links" aria-label="Footer links">
+            <Link href="/faq">FAQ</Link>
+            <Link href="/page/terms">Terms</Link>
+            <Link href="/tickets/new">Support</Link>
+          </nav>
         </footer>
-      </div>
-    </>
+      </main>
+    </div>
   );
 }

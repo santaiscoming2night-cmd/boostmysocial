@@ -4,7 +4,7 @@ import { getSettings, settingOn } from '@/lib/settings';
 import { createClient } from '@/lib/supabase/server';
 import ServicesBrowser from '@/components/ServicesBrowser';
 
-export const metadata = { title: 'Services' };
+export const metadata = { title: 'Service catalog' };
 export const dynamic = 'force-dynamic';
 
 export default async function ServicesPage() {
@@ -14,10 +14,13 @@ export default async function ServicesPage() {
   if (!user && !publicList) {
     return (
       <section className="pt-90 pb-90">
-        <div className="container text-center">
-          <h1>Our services</h1>
-          <p className="text-muted">Sign in to browse the full service list and place orders.</p>
-          <Link href="/login?next=/services" className="btn btn-primary">Sign in</Link>
+        <div className="container nova-public-page text-center">
+          <div className="nova-section-heading center">
+            <p className="nova-kicker">Service matrix</p>
+            <h1>Explore the catalog.</h1>
+            <p>Sign in to see the full service list and launch campaigns from your workspace.</p>
+          </div>
+          <Link href="/login?next=/services" className="btn mt-4"><i className="fe fe-log-in" /> Sign in to explore</Link>
         </div>
       </section>
     );
@@ -47,15 +50,16 @@ export default async function ServicesPage() {
 
   return (
     <section className="pt-90 pb-90">
-      <div className="container">
-        <div className="section-title text-center mb-4">
-          <h1>Our services</h1>
-          <p className="text-muted">Prices are per 1000 units. Sign in to order at your personal rate.</p>
+      <div className="container nova-public-page">
+        <div className="nova-section-heading center nova-catalog-heading">
+          <p className="nova-kicker">Live service matrix</p>
+          <h1>Find the right signal.</h1>
+          <p>Browse current services, limits, and rates. Prices shown are per 1,000 units.</p>
         </div>
         {!user ? (
-          <div className="text-center mb-4">
-            <Link href="/login?next=/services" className="btn btn-primary">Sign in to order</Link>{' '}
-            <Link href="/signup" className="btn btn-outline-primary">Create an account</Link>
+          <div className="text-center nova-public-actions">
+            <Link href="/login?next=/services" className="btn"><i className="fe fe-log-in" /> Sign in to launch</Link>
+            <Link href="/signup" className="btn btn-outline-primary">Create instant access <i className="fe fe-arrow-up-right" /></Link>
           </div>
         ) : null}
         <ServicesBrowser

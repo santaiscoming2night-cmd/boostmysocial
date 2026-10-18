@@ -5,7 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { money, dateTime } from '@/lib/format';
 import StatusBadge from '@/components/StatusBadge';
 
-export const metadata = { title: 'Statistics' };
+export const metadata = { title: 'Command center' };
 export const dynamic = 'force-dynamic';
 
 async function loadStats(user) {
@@ -28,16 +28,29 @@ export default async function DashboardPage() {
   const [user, settings] = await Promise.all([requireUser(), getSettings()]);
   const { orders, counts, spent, total = 0 } = await loadStats(user);
   const active = (counts.active || 0) + (counts.inprogress || 0) + (counts.processing || 0);
+  const firstName = user.first_name || 'Operator';
 
   const cards = [
-    { label: 'Balance', value: money(user.balance, settings), icon: 'fe fe-dollar-sign', tone: 'primary' },
-    { label: 'Total spent', value: money(spent, settings), icon: 'fe fe-trending-up', tone: 'green' },
-    { label: 'Total orders', value: total, icon: 'fe fe-shopping-cart', tone: 'azure' },
-    { label: 'Active orders', value: active, icon: 'fe fe-loader', tone: 'orange' },
+    { label: 'Ready balance', value: money(user.balance, settings), icon: 'fe fe-credit-card', tone: 'primary' },
+    { label: 'Campaign spend', value: money(spent, settings), icon: 'fe fe-trending-up', tone: 'green' },
+    { label: 'Orders launched', value: total, icon: 'fe fe-send', tone: 'azure' },
+    { label: 'Moving now', value: active, icon: 'fe fe-activity', tone: 'orange' },
   ];
 
   return (
     <>
+      <section className="nova-command-hero">
+        <div className="nova-command-hero-copy">
+          <p className="nova-kicker">Campaign pulse</p>
+          <h1>Good to see you, {firstName}.</h1>
+          <p>Your workspace is clear. Pick the next move and let the signal travel.</p>
+        </div>
+        <div className="nova-command-hero-actions">
+          <Link href="/order/add" className="btn"><i className="fe fe-zap" /> Launch order</Link>
+          {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary"><i className="fe fe-plus" /> Add funds</Link> : null}
+        </div>
+      </section>
+
       <div className="row">
         {cards.map((card) => (
           <div className="col-sm-6 col-lg-3" key={card.label}>
@@ -48,7 +61,7 @@ export default async function DashboardPage() {
                     <div className="text-muted small text-uppercase">{card.label}</div>
                     <div className="h1 mt-1">{card.value}</div>
                   </div>
-                  <span className={`text-${card.tone}`} style={{ fontSize: 28 }}><i className={card.icon} /></span>
+                  <span className={`text-${card.tone}`} style={{ fontSize: 25 }}><i className={card.icon} /></span>
                 </div>
               </div>
             </div>
@@ -60,8 +73,8 @@ export default async function DashboardPage() {
         <div className="col-lg-8">
           <div className="card">
             <div className="card-header d-flex justify-content-between align-items-center">
-              <h3 className="card-title">Recent orders</h3>
-              <Link href="/order/log" className="btn btn-sm btn-secondary">View all</Link>
+              <h2 className="card-title">Recent launch activity</h2>
+              <Link href="/order/log" className="btn btn-sm btn-secondary">View history <i className="fe fe-arrow-up-right" /></Link>
             </div>
             <div className="table-responsive">
               <table className="table card-table table-vcenter table-sm">
@@ -72,12 +85,12 @@ export default async function DashboardPage() {
                     <th>Link</th>
                     <th>Charge</th>
                     <th>Status</th>
-                    <th>Date</th>
+                    <th>Launched</th>
                   </tr>
                 </thead>
                 <tbody>
                   {orders.length === 0 ? (
-                    <tr><td colSpan={6} className="text-center text-muted py-4">No orders yet. <Link href="/order/add">Place your first order</Link>.</td></tr>
+                    <tr><td colSpan={6} className="text-center text-muted py-4">No activity yet. <Link href="/order/add">Launch your first order</Link>.</td></tr>
                   ) : orders.map((order) => (
                     <tr key={order.id}>
                       <td className="text-muted">#{order.id}</td>
@@ -95,16 +108,16 @@ export default async function DashboardPage() {
         </div>
         <div className="col-lg-4">
           <div className="card">
-            <div className="card-header"><h3 className="card-title">Quick actions</h3></div>
+            <div className="card-header"><h2 className="card-title">Quick launchpad</h2></div>
             <div className="card-body d-grid">
-              <Link href="/order/add" className="btn btn-primary btn-block mb-2"><i className="fe fe-shopping-cart mr-2" />New order</Link>
-              {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-success btn-block mb-2"><i className="fe fe-dollar-sign mr-2" />Add funds</Link> : null}
-              <Link href="/tickets/new" className="btn btn-secondary btn-block mb-2"><i className="fa fa-comments-o mr-2" />Open a ticket</Link>
-              <Link href="/services" className="btn btn-outline-primary btn-block"><i className="fe fe-list mr-2" />Browse services</Link>
+              <Link href="/order/add" className="btn btn-block mb-2"><i className="fe fe-zap mr-2" />New order</Link>
+              {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary btn-block mb-2"><i className="fe fe-credit-card mr-2" />Add funds</Link> : null}
+              <Link href="/tickets/new" className="btn btn-secondary btn-block mb-2"><i className="fe fe-message-circle mr-2" />Open support ticket</Link>
+              <Link href="/services" className="btn btn-outline-primary btn-block"><i className="fe fe-compass mr-2" />Browse catalog</Link>
             </div>
           </div>
           <div className="card">
-            <div className="card-header"><h3 className="card-title">Order status</h3></div>
+            <div className="card-header"><h2 className="card-title">Campaign states</h2></div>
             <div className="card-body p-0">
               <table className="table table-sm mb-0">
                 <tbody>

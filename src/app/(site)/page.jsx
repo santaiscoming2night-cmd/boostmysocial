@@ -1,225 +1,227 @@
 import Link from 'next/link';
 import { getSettings } from '@/lib/settings';
 import { getSessionUser } from '@/lib/auth';
-import { t } from '@/lib/format';
 
 export const dynamic = 'force-dynamic';
 
-const FEATURES = [
-  { icon: 'fe fe-calendar', title: 'Resellers', text: 'you_can_resell_our_services_and_grow_your_profit_easily_resellers_are_important_part_of_smm_panel' },
-  { icon: 'fe fe-phone-call', title: 'Supports', text: 'technical_support_for_all_our_services_247_to_help_you' },
-  { icon: 'fe fe-star', title: 'high_quality_services', text: 'get_the_best_high_quality_services_and_in_less_time_here' },
-  { icon: 'fe fe-upload-cloud', title: 'Updates', text: 'services_are_updated_daily_in_order_to_be_further_improved_and_to_provide_you_with_best_experience' },
-  { icon: 'fe fe-share-2', title: 'api_support', text: 'we_have_api_support_for_panel_owners_so_you_can_resell_our_services_easily' },
-  { icon: 'fe fe-dollar-sign', title: 'secure_payments', text: 'we_have_a_popular_methods_as_paypal_and_many_more_can_be_enabled_upon_request' },
+const CAPABILITIES = [
+  {
+    icon: 'fe fe-layers',
+    title: 'One clear control room',
+    text: 'Browse the catalog, launch orders, track delivery, and see the numbers that matter without hopping between tools.',
+  },
+  {
+    icon: 'fe fe-activity',
+    title: 'Built for momentum',
+    text: 'Give every campaign a clean workflow—from selecting a service to following status changes in real time.',
+  },
+  {
+    icon: 'fe fe-shield',
+    title: 'Operationally calm',
+    text: 'Keep balances, support, order logs, and API tools in a focused workspace designed for repeatable growth.',
+  },
 ];
 
 const STEPS = [
-  { title: 'register_and_log_in', text: 'creating_an_account_is_the_first_step_then_you_need_to_log_in' },
-  { title: 'add_funds', text: 'next_pick_a_payment_method_and_add_funds_to_your_account' },
-  { title: 'select_a_service', text: 'select_the_services_you_want_and_get_ready_to_receive_more_publicity' },
-  { title: 'enjoy_superb_results', text: 'you_can_enjoy_incredible_results_when_your_order_is_complete' },
+  ['01', 'Create access', 'Open your workspace in a moment. There is no verification-email detour.'],
+  ['02', 'Fund your balance', 'Choose an available payment method and set your campaign budget.'],
+  ['03', 'Launch precisely', 'Pick a service, enter your link and quantity, then submit your order.'],
+  ['04', 'Watch the signal', 'Track status and delivery from the live activity surface in your panel.'],
 ];
 
 const FAQS = [
-  { q: 'smm_panels__what_are_they', a: 'an_smm_panel_is_an_online_shop_that_you_can_visit_to_puchase_smm_services_at_great_prices' },
-  { q: 'what_smm_services_can_i_find_on_this_panel', a: 'we_sell_different_types_of_smm_services__likes_followers_views_etc' },
-  { q: 'are_smm_services_on_your_panel_safe_to_buy', a: 'sure_your_accounts_wont_get_banned' },
-  { q: 'how_does_a_mass_order_work', a: 'its_possible_to_place_multiple_orders_with_different_links_at_once_with_the_help_of_the_mass_order_feature' },
-  { q: 'what_does_dripfeed_mean', a: 'grow_your_accounts_as_fast_as_you_want_with_the_help_of_dripfeed_how_it_works_lets_say_you_want_2000_likes_on_your_post_instead_of_getting_all_2000_at_once_you_can_get_200_each_day_for_10_days' },
+  ['What is an SMM panel?', 'It is a central workspace for browsing and ordering social media marketing services, then tracking every order in one place.'],
+  ['Which services can I find here?', 'The catalog can include services for social platforms such as Instagram, Facebook, YouTube, TikTok, and more. Availability is shown in the live service list.'],
+  ['What is drip-feed?', 'Drip-feed lets a larger order be paced over time rather than delivered all at once. Select services that support it when you want a more gradual schedule.'],
+  ['Can I manage multiple orders?', 'Yes. Your order logs collect all campaign activity, while the workspace makes it simple to review individual statuses and balances.'],
 ];
 
 export default async function HomePage({ searchParams }) {
   const [settings, user, params] = await Promise.all([getSettings(), getSessionUser(), searchParams]);
+  const title = settings.website_title || 'Boost My Social';
+  const primaryHref = user ? '/dashboard' : '/signup';
+  const primaryLabel = user ? 'Open command center' : 'Create your access';
 
   return (
-    <main>
+    <main id="home">
       {params?.subscribed ? (
-        <div className="container" style={{ paddingTop: 90 }}>
-          <div className="alert alert-success mb-0">Thanks for subscribing! We&apos;ll keep you posted.</div>
+        <div className="nova-container" style={{ paddingTop: 104 }}>
+          <div className="alert alert-success mb-0">Thanks for subscribing. Your signal is on our radar.</div>
         </div>
       ) : null}
-      <section id="home" className="header-top mheader">
-        <div className="intro_wrapper">
-          <div className="container">
-            <div className="row">
-              <div className="col-sm-12 col-md-12 col-lg-6">
-                <div className="intro_text">
-                  <h1>{t('resellers_1_destination_for_smm_services')}</h1>
-                  <p>{t('save_time_managing_your_social_account_in_one_panel_where_people_buy_smm_services_such_as_facebook_ads_management_instagram_youtube_twitter_soundcloud_website_ads_and_many_more')}</p>
-                  <div className="btn">
-                    {user ? (
-                      <Link href="/dashboard" className="btn btn-pill btn-gradient btn-signin btn-submit btn-lg">Dashboard</Link>
-                    ) : (
-                      <Link href="/signup" className="btn btn-pill btn-gradient btn-signin btn-submit btn-lg">{t('get_start_now')}</Link>
-                    )}
+
+      <section className="nova-hero" aria-labelledby="hero-heading">
+        <div className="nova-container nova-hero-grid">
+          <div className="nova-hero-copy">
+            <p className="nova-kicker">Social growth, re-engineered</p>
+            <h1 id="hero-heading">Your next move deserves <em>a command center.</em></h1>
+            <p className="nova-hero-lede">
+              {title} turns social growth into a deliberate system: discover the right service, launch with confidence, and keep every campaign in view.
+            </p>
+            <div className="nova-hero-actions">
+              <Link className="nova-btn" href={primaryHref}>
+                <i className="fe fe-zap" aria-hidden="true" /> {primaryLabel}
+              </Link>
+              <Link className="nova-btn nova-btn--ghost" href="/services">
+                Explore services <i className="fe fe-arrow-up-right" aria-hidden="true" />
+              </Link>
+            </div>
+            <p className="nova-hero-note"><span className="nova-live-dot" />Instant workspace access · no confirmation-email queue</p>
+          </div>
+
+          <div className="nova-hero-visual" aria-label="Preview of the panel command center">
+            <div className="nova-hero-orb" aria-hidden="true" />
+            <div className="nova-command-preview">
+              <div className="nova-preview-bar">
+                <div className="nova-preview-dots" aria-hidden="true"><b /><b /><b /></div>
+                <span>Campaign pulse</span>
+              </div>
+              <div className="nova-preview-body">
+                <div className="nova-preview-rail" aria-hidden="true">
+                  <div className="nova-preview-brand-line" />
+                  <div className="nova-preview-nav-line active" />
+                  <div className="nova-preview-nav-line" />
+                  <div className="nova-preview-nav-line" />
+                  <div className="nova-preview-nav-line" />
+                  <div className="nova-preview-nav-line" />
+                </div>
+                <div className="nova-preview-content">
+                  <div className="nova-preview-title-row"><b>Signal overview</b><span><i className="nova-live-dot" />Live</span></div>
+                  <div className="nova-preview-stats">
+                    <div className="nova-preview-stat"><span>Orders</span><b>1,284</b></div>
+                    <div className="nova-preview-stat"><span>Delivery</span><b className="cyan">99.9%</b></div>
+                    <div className="nova-preview-stat"><span>Active</span><b className="lime">24</b></div>
+                  </div>
+                  <div className="nova-preview-chart" aria-hidden="true">
+                    <svg viewBox="0 0 330 131" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="novaChartGradient" x1="0" x2="0" y1="0" y2="1">
+                          <stop offset="0%" stopColor="#61e8ff" stopOpacity=".32" />
+                          <stop offset="100%" stopColor="#61e8ff" stopOpacity="0" />
+                        </linearGradient>
+                      </defs>
+                      <path className="fill" d="M0,108 C24,101 31,104 47,94 C66,82 70,92 93,71 C117,51 129,73 149,59 C171,43 177,52 195,41 C222,23 231,50 250,33 C276,9 288,24 330,12 L330,131 L0,131 Z" />
+                      <path className="line" d="M0,108 C24,101 31,104 47,94 C66,82 70,92 93,71 C117,51 129,73 149,59 C171,43 177,52 195,41 C222,23 231,50 250,33 C276,9 288,24 330,12" />
+                      <circle cx="250" cy="33" r="4" />
+                    </svg>
                   </div>
                 </div>
               </div>
-              <div className="col-sm-12 col-md-12 col-lg-6" data-aos="fade-up" data-aos-duration="500">
-                <div className="intro_banner">
-                  <img src="/themes/regular/assets/images/header-top.png" alt="SMM panel" />
-                </div>
-              </div>
+            </div>
+            <div className="nova-float-card nova-float-card--orders">
+              <span className="nova-float-icon"><i className="fe fe-check" /></span>
+              <div><b>Order routed</b><span>Campaign is in motion</span></div>
+            </div>
+            <div className="nova-float-card nova-float-card--signal">
+              <span className="nova-float-icon"><i className="fe fe-activity" /></span>
+              <div><b>Signal strong</b><span>All systems ready</span></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="services" className="services">
-        <div className="container">
-          <div className="row justify-content-center m-b-20">
-            <div className="col-lg-10">
-              <div className="section-title text-center">
-                <div className="line m-auto" />
-                <h3 className="title">
-                  {t('reasons_why_you_should_try_our_panel')} <span>{t('let_us_help_you_build_your_online_presence_quickly_and_efficiently')}</span>
-                </h3>
-              </div>
-            </div>
+      <div className="nova-hero-trust">
+        <div className="nova-hero-trust-inner">
+          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-zap" /></span><div><b>Fast launch flow</b><span>From service to order</span></div></div>
+          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-eye" /></span><div><b>Clear visibility</b><span>Status at a glance</span></div></div>
+          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-repeat" /></span><div><b>Built to repeat</b><span>For every campaign cycle</span></div></div>
+          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-headphones" /></span><div><b>Support nearby</b><span>Open a ticket anytime</span></div></div>
+        </div>
+      </div>
+
+      <section className="nova-home-section" id="network">
+        <div className="nova-container">
+          <div className="nova-section-heading center">
+            <p className="nova-kicker">Less noise. More signal.</p>
+            <h2>Not another generic dashboard.</h2>
+            <p>A tactile, high-clarity operating layer for social campaigns—designed to make the next action obvious.</p>
           </div>
-          <div className="row justify-content-center">
-            {[
-              { icon: 'fe fe-award', shape: 'services-shape-1.svg', title: 'best_quality', text: 'the_highest_quality_smm_services_to_meet_your_needs', delay: 500 },
-              { icon: 'fe fe-truck', shape: 'services-shape-2.svg', title: 'diverse_payment_options', text: 'we_have_a_good_amount_of_different_payment_options', delay: 1000 },
-              { icon: 'fe fe-clock', shape: 'services-shape-3.svg', title: 'super_quick_delivery', text: 'we_provide_automated_services_with_quick_delivery', delay: 1500 },
-            ].map((card) => (
-              <div className="col-lg-4 col-md-7 col-sm-8" data-aos="fade-up" data-aos-duration={card.delay} key={card.title}>
-                <div className="sigle-service text-center m-t-30">
-                  <div className="services-icon">
-                    <img className="shape" src="/themes/regular/assets/images/services-shape.svg" alt="shape" />
-                    <img className="shape-1" src={`/themes/regular/assets/images/${card.shape}`} alt="shape" />
-                    <i className={card.icon} />
-                  </div>
-                  <div className="services-content m-t-30">
-                    <h4 className="services-title">{t(card.title)}</h4>
-                    <p className="text">{t(card.text)}</p>
-                  </div>
-                </div>
-              </div>
+          <div className="nova-service-grid">
+            {CAPABILITIES.map((capability) => (
+              <article className="nova-service-card" key={capability.title}>
+                <span className="nova-service-glyph"><i className={capability.icon} aria-hidden="true" /></span>
+                <h3>{capability.title}</h3>
+                <p>{capability.text}</p>
+              </article>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="social-icon-area pt-90" data-aos="fade-up" data-aos-duration="1000">
-        <div className="container">
-          <div className="row">
-            <div className="col-lg-12">
-              <div className="brand-logo d-flex align-items-center justify-content-center justify-content-md-between">
-                {['fb.png', 'ig.png', 'yt.png', 'tw.png', 'sc.png'].map((img) => (
-                  <div className="single-logo m-t-30" data-aos="zoom-in" data-aos-duration="1500" key={img}>
-                    <img src={`/themes/regular/assets/images/${img}`} alt={img} />
-                  </div>
-                ))}
-              </div>
+      <section className="nova-home-section" style={{ paddingTop: 34 }}>
+        <div className="nova-container nova-network">
+          <div className="nova-network-visual" aria-hidden="true">
+            <div className="nova-network-ring" />
+            <div className="nova-network-core"><i className="fe fe-zap" /></div>
+            <div className="nova-network-node"><i className="fa fa-instagram" /></div>
+            <div className="nova-network-node"><i className="fa fa-youtube-play" /></div>
+            <div className="nova-network-node"><i className="fa fa-facebook" /></div>
+            <div className="nova-network-node"><i className="fa fa-music" /></div>
+          </div>
+          <div className="nova-network-copy">
+            <div className="nova-section-heading">
+              <p className="nova-kicker">The connected layer</p>
+              <h2>Every platform, one focused orbit.</h2>
+              <p>Keep your social promotion workflow centered even when your audience lives in many places.</p>
+            </div>
+            <div className="nova-network-points">
+              <div className="nova-network-point"><i className="fe fe-command" /><div><b>Structured service discovery</b><span>Browse categories, compare limits, and choose a service with the context you need.</span></div></div>
+              <div className="nova-network-point"><i className="fe fe-sliders" /><div><b>Campaign-level control</b><span>Set your link, quantity, and pacing with a form that makes each order easy to understand.</span></div></div>
+              <div className="nova-network-point"><i className="fe fe-bar-chart-2" /><div><b>Activity that stays visible</b><span>Use order logs and live statuses to know what is moving without digging through clutter.</span></div></div>
             </div>
           </div>
         </div>
       </section>
 
-      <section id="features" className="our-features" data-aos="fade-up" data-aos-duration="300">
-        <div className="container custom-container">
-          <div className="row">
-            <div className="col-lg-12 text-center">
-              <div className="section-title pb-20">
-                <h1>{t('What_we_offer')}</h1>
-                <p>{t('comes_with_all_the_essential_features_and_elements_you_need_here_are_the_key_features_of_our_services_you_must_know')}</p>
-              </div>
-            </div>
+      <section className="nova-home-section">
+        <div className="nova-container nova-process-shell">
+          <div className="nova-section-heading center">
+            <p className="nova-kicker">A cleaner launch sequence</p>
+            <h2>Four moves to momentum.</h2>
+            <p>Designed to feel deliberate from the first click—not like another form you have to fight.</p>
           </div>
-          <div className="row features-wrapper">
-            {FEATURES.map((f) => (
-              <div className="col-lg-4 col-sm-6 features-col" data-aos="fade-up" data-aos-duration="1000" key={f.title}>
-                <div className="feature-content m-t-30 m-b-30">
-                  <div className="features-icon"><i className={f.icon} /></div>
-                  <div className="features-content">
-                    <h3>{t(f.title)}</h3>
-                    <p className="text-muted">{t(f.text)}</p>
-                  </div>
-                </div>
-              </div>
+          <div className="nova-process-grid">
+            {STEPS.map(([number, title, text]) => (
+              <article className="nova-process-step" key={number}>
+                <span className="nova-process-number">{number}</span>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
+          </div>
+          <div className="nova-platform-row" aria-label="Supported social platforms">
+            <span className="nova-platform"><i className="fa fa-instagram" />Instagram</span>
+            <span className="nova-platform"><i className="fa fa-youtube-play" />YouTube</span>
+            <span className="nova-platform"><i className="fa fa-music" />TikTok</span>
+            <span className="nova-platform"><i className="fa fa-facebook" />Facebook</span>
+          </div>
+        </div>
+      </section>
+
+      <section className="nova-home-section" id="faq">
+        <div className="nova-container">
+          <div className="nova-section-heading center">
+            <p className="nova-kicker">Clarity, on demand</p>
+            <h2>Questions before lift-off?</h2>
+            <p>Here are a few quick answers. Visit the knowledge base when you want to go deeper.</p>
+          </div>
+          <div className="nova-faq-grid">
+            {FAQS.map(([question, answer]) => (
+              <details key={question}>
+                <summary>{question}</summary>
+                <p>{answer}</p>
+              </details>
             ))}
           </div>
         </div>
       </section>
 
-      <section className="section-1">
-        <div className="container">
-          <div className="row">
-            <div className="col-md-6 p-t-60" data-aos="zoom-in-right" data-aos-duration="1000">
-              <div className="content">
-                <div className="title p-b-20">{t('best_smm_marketing_services')}</div>
-                <div className="desc">{t('best_smm_marketing_services_desc')}</div>
-              </div>
-            </div>
-            <div className="col-md-6" data-aos="zoom-in-up" data-aos-duration="1000">
-              <div className="intro-img">
-                <img className="img-fluid" src="/themes/regular/assets/images/about.png" alt="About us" />
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="how-it-works">
-        <div className="container">
-          <div className="row text-center" data-aos="fade-up" data-aos-delay="700">
-            <div className="col-md-12 mx-auto">
-              <div className="header-top">
-                <div className="title">{t('how_it_works')}</div>
-                <span>{t('by_following_the_processes_below_you_can_make_any_order_you_want')}</span>
-              </div>
-              <div className="col-md-12">
-                <div className="row step-lists">
-                  {STEPS.map((step, index) => (
-                    <div className="col-sm-6 col-lg-3 step text-left" key={step.title}>
-                      <div className="header-name">
-                        <h3>{t(step.title)}</h3>
-                        <p className="desc">{t(step.text)}</p>
-                      </div>
-                      <div className="bg-number">{index + 1}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row package-faq" data-aos="fade-up" data-aos-delay="1000">
-            <div className="col-md-12">
-              <div className="header-top text-center">
-                <div className="title">F.A.Q</div>
-              </div>
-              <div className="row">
-                {[FAQS.slice(0, 3), FAQS.slice(3)].map((column, columnIndex) => (
-                  <div className="col-md-6" key={columnIndex}>
-                    {column.map((item) => (
-                      <details className="item" key={item.q}>
-                        <summary className="title">
-                          <i className="fe fe-plus plus-icon" />
-                          <h5>{t(item.q)}</h5>
-                        </summary>
-                        <div className="body">{t(item.a)}</div>
-                      </details>
-                    ))}
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section className="pt-60 pb-60">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8 text-center" data-aos="fade-up">
-              <h2 className="m-b-20">{settings.website_title}</h2>
-              <p className="text-muted">{settings.website_desc}</p>
-              <Link href="/signup" className="btn btn-pill btn-gradient btn-signin btn-submit btn-lg">{t('get_start_now')}</Link>
-            </div>
-          </div>
+      <section className="nova-home-section" style={{ paddingTop: 0 }}>
+        <div className="nova-container nova-cta-panel">
+          <p className="nova-kicker">The panel is ready</p>
+          <h2>Make your next campaign feel inevitable.</h2>
+          <p>Open a premium workspace that puts social growth, campaign activity, and your next decision in the same orbit.</p>
+          <Link className="nova-btn" href={primaryHref}><i className="fe fe-zap" /> {primaryLabel}</Link>
         </div>
       </section>
     </main>

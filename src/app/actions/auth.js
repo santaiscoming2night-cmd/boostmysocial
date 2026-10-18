@@ -8,7 +8,7 @@ import { getSettings, settingOn } from '@/lib/settings';
 import { hasSupabaseEnv } from '@/lib/supabase/env';
 
 async function siteUrl() {
-  const configured = process.env.NEXT_PUBLIC_SITE_URL;
+  const configured = process.env.SITE_URL;
   if (configured) return configured.replace(/\/$/, '');
   // Fall back to the request host so confirmation links also work when the
   // deployment URL was not configured explicitly.

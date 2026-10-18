@@ -7,7 +7,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function ApiDocsPage() {
   const user = await requireUser();
-  const endpoint = (process.env.NEXT_PUBLIC_SITE_URL || 'https://your-domain.com').replace(/\/$/, '') + '/api/v1';
+  const endpoint = (process.env.SITE_URL || 'https://your-domain.com').replace(/\/$/, '') + '/api/v1';
 
   const sections = [
     {

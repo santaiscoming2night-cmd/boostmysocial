@@ -83,8 +83,8 @@ scripts                     Optional helpers (legacy user import)
 2. Pick an organisation, a name, a strong database password and the region closest to your users.
 3. Wait for provisioning to finish.
 4. Open **Project Settings → API** (or **API Keys**) and copy:
-   - **Project URL** → `NEXT_PUBLIC_SUPABASE_URL`
-   - **anon / publishable key** → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - **Project URL** → `SUPABASE_URL`
+   - **anon / publishable key** → `SUPABASE_ANON_KEY`
    - **service_role / secret key** → `SUPABASE_SERVICE_ROLE_KEY`
 
 > The service-role key can read and write every row and bypasses Row Level Security. It must only ever exist in server-side environment variables.
@@ -155,29 +155,31 @@ In the Supabase dashboard:
 
 Password reset and signup confirmation links are routed through `/auth/callback`, which exchanges the code for a session and then sends the user to the dashboard or reset form.
 
-If `NEXT_PUBLIC_SITE_URL` is not set, the app derives the callback origin from the incoming request, so emails still work — but setting it explicitly is strongly recommended.
+If `SITE_URL` is not set, the app derives the callback origin from the incoming request, so emails still work — but setting it explicitly is strongly recommended.
 
 ## 4. Environment variables
 
 Copy the template and fill it in:
 
 ```bash
-cp .env.example .env.local
+cp .env.example .env
 ```
 
 | Variable | Exposed to browser | Used for |
 |---|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Yes | Supabase REST/Auth endpoint |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Yes | Browser and server clients; all access is still constrained by RLS |
+| `SUPABASE_URL` | **No** | Server-side Supabase REST/Auth endpoint |
+| `SUPABASE_ANON_KEY` | **No** | Server clients using the user session; RLS still applies |
 | `SUPABASE_SERVICE_ROLE_KEY` | **No** | Reading settings, admin panel operations, the panel API, newsletter inserts |
-| `NEXT_PUBLIC_SITE_URL` | Yes | Auth email redirects and the API endpoint shown on `/api/docs` |
+| `SITE_URL` | **No** (URL displayed in API docs) | Auth email redirects and the API endpoint shown on `/api/docs` |
+
+When migrating an existing deployment, remove `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, and `NEXT_PUBLIC_SITE_URL` from hosting settings and replace them with the names above. Redeploy to replace previously published browser bundles. Rotate any service-role key that was ever exposed publicly.
 
 Rules of thumb:
 
-- `.env.local` is git-ignored. Never commit real keys.
-- Anything prefixed `NEXT_PUBLIC_` is baked into the JavaScript at **build** time. Change it in Vercel, then redeploy.
+- `.env` is git-ignored. Never commit real keys.
+- No environment variables need a `NEXT_PUBLIC_` prefix. Supabase calls run on the server, including order submission. The site URL is displayed where needed but no credentials are passed to the browser.
 - Never prefix the service-role key with `NEXT_PUBLIC_` and never import it into a client component.
-- `NEXT_PUBLIC_SITE_URL` should have **no trailing slash**, e.g. `https://boostmysocial.com`.
+- `SITE_URL` should have **no trailing slash**, e.g. `https://boostmysocial.com`.
 
 For Vercel, add the same four variables under **Project → Settings → Environment Variables** for **Production** (and **Preview** if you use preview deployments).
 
@@ -194,9 +196,9 @@ For Vercel, add the same four variables under **Project → Settings → Environ
 4. Open **Environment Variables** and add all four variables from [.env.example](.env.example). Select Production (and Preview if needed).
 5. Click **Deploy**. The first build takes a couple of minutes.
 6. When the deployment is ready, open **Settings → Domains** to attach your domain, then update:
-   - `NEXT_PUBLIC_SITE_URL` in Vercel to `https://your-domain.com`
+   - `SITE_URL` in Vercel to `https://your-domain.com`
    - Supabase **Site URL** and **Redirect URLs** to the same domain
-   - Redeploy after changing any `NEXT_PUBLIC_*` value.
+   - Restart or redeploy after changing environment variables.
 
 Notes:
 
@@ -216,7 +218,7 @@ npm run build
 npm start            # listens on 0.0.0.0:3000 by default (set PORT to override)
 ```
 
-Put it behind HTTPS (Nginx, Caddy, Cloudflare Tunnel), keep the four environment variables set, and point `NEXT_PUBLIC_SITE_URL` at the public HTTPS URL.
+Put it behind HTTPS (Nginx, Caddy, Cloudflare Tunnel), keep the four environment variables set, and point `SITE_URL` at the public HTTPS URL.
 
 ## 6. First administrator
 
@@ -251,7 +253,7 @@ update public.profiles set role = 'admin' where email = 'you@example.com';
 
 ```bash
 npm install
-cp .env.example .env.local     # then fill in your Supabase keys
+cp .env.example .env     # then fill in your Supabase keys
 npm run dev                    # http://localhost:3000
 ```
 
@@ -437,7 +439,7 @@ Deliberate differences:
 
 | Symptom | Cause and fix |
 |---|---|
-| Yellow "Supabase is not configured" banner | `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` are missing. Restart `npm run dev` after editing `.env.local`. |
+| Yellow "Supabase is not configured" banner | `SUPABASE_URL` / `SUPABASE_ANON_KEY` are missing. Restart `npm run dev` after editing `.env`. |
 | Site shows the default logo and title | `SUPABASE_SERVICE_ROLE_KEY` is missing, so settings cannot be read, or `0004_seed.sql` was not applied. |
 | Signup succeeds but no email arrives | Supabase's built-in mail is rate-limited. Configure SMTP, check spam, or disable "Confirm email" while testing. |
 | Login redirects back to `/login` | Site URL / redirect URLs in Supabase do not match the domain. Update them and clear cookies. |
@@ -449,8 +451,8 @@ Deliberate differences:
 | API returns `Invalid API key` | Use the key on `/profile`; keys are per user. A blocked account returns 403. |
 | API returns `Server is not configured` | `SUPABASE_SERVICE_ROLE_KEY` is not set in that environment. |
 | Images or CSS return 404 | `public/` was not deployed. Confirm the build includes it and that `.vercelignore` only excludes `legacy`. |
-| Vercel build fails | Check the root directory is the repository root, Node is 18.18+, and all `NEXT_PUBLIC_*` values are set for the right environment. |
-| Production still uses an old URL | `NEXT_PUBLIC_*` variables are compiled in; change them in Vercel and redeploy. |
+| Vercel build fails | Check the root directory is the repository root, Node is 18.18+, and all required environment values are set for the right environment. |
+| Production still uses an old URL | Update `SITE_URL` in your hosting environment and restart or redeploy. |
 
 For anything not covered here, check the deployment logs first (Vercel → Deployments → Functions) and the Supabase logs second (Database and Auth). Server-side errors from Supabase usually name the table or policy involved.
 

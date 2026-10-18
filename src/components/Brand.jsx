@@ -7,7 +7,7 @@ export default function Brand({ settings, href = '/', className = '', showTaglin
   const [primaryFailed, setPrimaryFailed] = useState(false);
   const [inverseFailed, setInverseFailed] = useState(false);
   const name = settings?.website_title || 'Boost My Social';
-  const tagline = settings?.website_tagline || 'Social growth, kept in line.';
+  const tagline = settings?.website_tagline || 'Social growth, made louder.';
   const primaryLogo = settings?.website_logo || '';
   const inverseLogo = settings?.website_logo_white || primaryLogo;
   const hasPrimary = Boolean(primaryLogo && !primaryFailed);

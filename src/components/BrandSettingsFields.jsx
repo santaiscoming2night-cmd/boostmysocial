@@ -12,7 +12,7 @@ export default function BrandSettingsFields({ settings }) {
   const initialLogo = settings.website_logo || '';
   const initialDarkLogo = settings.website_logo_white || '';
   const [name, setName] = useState(settings.website_title || 'Boost My Social');
-  const [tagline, setTagline] = useState(settings.website_tagline || 'Social growth, kept in line.');
+  const [tagline, setTagline] = useState(settings.website_tagline || 'Social growth, made louder.');
   const [logo, setLogo] = useState(initialLogo);
   const [darkLogo, setDarkLogo] = useState(initialDarkLogo);
 
@@ -31,7 +31,7 @@ export default function BrandSettingsFields({ settings }) {
       <div className="brand-studio-intro">
         <p className="brand-studio-eyebrow">Brand identity</p>
         <h2>Make the panel unmistakably yours.</h2>
-        <p>Name, mark, and message are used across the public site, access screens, and command center.</p>
+        <p>Name, mark, and message are used across the public site, access screens, and social workspace.</p>
       </div>
       <div className="brand-studio-preview" aria-label="Live brand preview">
         <div className="brand-studio-preview-mark"><LogoPreview key={logo} url={logo} name={name} /></div>

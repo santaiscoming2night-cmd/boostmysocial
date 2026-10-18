@@ -4,144 +4,179 @@ import { getSessionUser } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-const PRINCIPLES = [
-  ['01', 'A considered catalog', 'Find the service, rate, limits, and context you need before you commit to a campaign.'],
-  ['02', 'A clear launch path', 'Set the destination and quantity, then send the work forward without unnecessary ceremony.'],
-  ['03', 'A visible record', 'Keep orders, balances, support, and status changes in one calm operational view.'],
+const SOCIAL_ICONS = [
+  ['fa fa-instagram', 'instagram'],
+  ['fa fa-facebook', 'facebook'],
+  ['fa fa-youtube-play', 'youtube'],
+  ['fa fa-twitter', 'twitter'],
+  ['fa fa-music', 'tiktok'],
+  ['fa fa-soundcloud', 'soundcloud'],
+];
+
+const GROWTH_MODES = [
+  { icon: 'fa fa-instagram', tone: 'instagram', title: 'Visual momentum', text: 'Shape the reach around your posts, reels, stories, and profile presence.' },
+  { icon: 'fa fa-youtube-play', tone: 'youtube', title: 'Video velocity', text: 'Give new videos a stronger starting spark and keep your catalog moving.' },
+  { icon: 'fa fa-music', tone: 'tiktok', title: 'Culture in motion', text: 'Choose services built for short-form moments, sounds, and fast attention.' },
+  { icon: 'fa fa-facebook', tone: 'facebook', title: 'Community lift', text: 'Support the pages, groups, and conversations your audience already follows.' },
 ];
 
 const STEPS = [
-  ['01', 'Set your base', 'Create your workspace and prepare a balance for the work ahead.'],
-  ['02', 'Choose the channel', 'Browse the service catalog with limits and rates in plain view.'],
-  ['03', 'Make the move', 'Launch a precise order with the link, quantity, and pacing you intend.'],
-  ['04', 'Keep watch', 'Follow the order through its lifecycle from your activity ledger.'],
+  ['01', 'Pick your platform', 'Choose a category made for the social channel you want to grow.'],
+  ['02', 'Choose the boost', 'Compare service details, limits, and rates before you boost.'],
+  ['03', 'Set the pace', 'Add your link and quantity, then send the campaign into motion.'],
+  ['04', 'Watch it travel', 'Track delivery and status from your personal campaign space.'],
 ];
 
 const FAQS = [
-  ['What is this panel for?', 'It is a focused workspace for finding, ordering, and tracking social media marketing services in one place.'],
-  ['Which platforms are represented?', 'The live catalog lists the currently available categories and services for the platforms supported by this panel.'],
-  ['What does drip-feed mean?', 'Drip-feed allows an eligible order to be paced over time instead of being delivered in one single release.'],
-  ['Can I review work after I launch it?', 'Yes. Your order log and activity views keep the campaign record and its current status close at hand.'],
+  ['What can I grow with this panel?', 'The live catalog contains the currently available social media marketing services, arranged by platform and goal.'],
+  ['Can I see an order after I place it?', 'Yes. Your dashboard and order log keep campaign status, charge, link, and activity in view.'],
+  ['What is drip-feed?', 'For eligible services, drip-feed lets you pace a larger order over time instead of requesting a single release.'],
+  ['Do I need to verify an email before starting?', 'No. New workspaces open immediately after account creation, so you can start exploring the panel right away.'],
 ];
+
+function FloatingSocialIcons({ className = '' }) {
+  return (
+    <div className={`social-float-field ${className}`} aria-hidden="true">
+      {SOCIAL_ICONS.map(([icon, tone], index) => (
+        <span className={`social-float social-float--${tone} social-float--${index + 1}`} key={tone}><i className={icon} /></span>
+      ))}
+    </div>
+  );
+}
 
 export default async function HomePage({ searchParams }) {
   const [settings, user, params] = await Promise.all([getSettings(), getSessionUser(), searchParams]);
   const title = settings.website_title || 'Boost My Social';
-  const tagline = settings.website_tagline || 'Social growth, kept in line.';
+  const tagline = settings.website_tagline || 'Social growth, made louder.';
   const primaryHref = user ? '/dashboard' : '/signup';
-  const primaryLabel = user ? 'Open the panel' : 'Create access';
+  const primaryLabel = user ? 'Open my dashboard' : 'Start boosting';
 
   return (
-    <main id="home">
+    <main className="social-home" id="home">
       {params?.subscribed ? (
-        <div className="signal-alert-wrap">
-          <div className="alert alert-success mb-0">You&apos;re on the dispatch list. We&apos;ll keep the notes useful.</div>
-        </div>
+        <div className="social-alert-wrap"><div className="alert alert-success mb-0">You&apos;re on the list. Fresh panel updates are headed your way.</div></div>
       ) : null}
 
-      <section className="signal-hero" aria-labelledby="hero-heading">
-        <div className="signal-hero-copy">
-          <div className="signal-hero-meta"><span>01 / SIGNAL LEDGER</span><span>{title.toUpperCase()}</span></div>
-          <h1 id="hero-heading">Make the next move <em>impossible to miss.</em></h1>
-          <p className="signal-hero-tagline">{tagline}</p>
-          <p className="signal-hero-lede">A purposeful social-growth workspace for people who prefer visibility, rhythm, and a clear record of every campaign.</p>
-          <div className="signal-hero-actions">
-            <Link className="atelier-action atelier-action--solid" href={primaryHref}>{primaryLabel} <i className="fe fe-arrow-up-right" /></Link>
-            <Link className="atelier-action atelier-action--quiet" href="/services">Browse services <i className="fe fe-arrow-right" /></Link>
+      <section className="social-hero" aria-labelledby="hero-heading">
+        <FloatingSocialIcons className="social-float-field--hero" />
+        <div className="social-hero-copy">
+          <p className="social-eyebrow"><span className="social-eyebrow-dot" />The social media boost room</p>
+          <h1 id="hero-heading">Turn your <span>socials</span> into a movement.</h1>
+          <p className="social-hero-tagline">{tagline}</p>
+          <p className="social-hero-lede">{title} gives creators, agencies, and resellers one colourful control space to start social campaigns and keep every boost in view.</p>
+          <div className="social-hero-actions">
+            <Link className="social-action social-action--primary" href={primaryHref}><i className="fe fe-zap" />{primaryLabel}</Link>
+            <Link className="social-action social-action--ghost" href="/services">Explore services <i className="fe fe-arrow-up-right" /></Link>
           </div>
-          <div className="signal-hero-footnote"><span />No verification-email detour. A workspace opens when you&apos;re ready.</div>
+          <div className="social-hero-note"><span><i className="fe fe-check" /></span>Instant access · no confirmation-email wait</div>
         </div>
 
-        <figure className="signal-map" aria-labelledby="signal-map-caption">
-          <figcaption id="signal-map-caption">CAMPAIGN FIELD / LIVE WORKSPACE</figcaption>
-          <svg viewBox="0 0 660 480" role="img" aria-label="A campaign signal map connecting social channels to a central control point">
-            <path className="signal-map-grid" d="M84 66H576M84 154H576M84 242H576M84 330H576M84 418H576M120 34V448M240 34V448M360 34V448M480 34V448" />
-            <path className="signal-map-route" d="M128 108 L300 220 L500 118 M128 366 L300 220 L528 340 M300 220 L360 384" />
-            <path className="signal-map-axis" d="M50 220H610 M300 22V458" />
-            <circle className="signal-map-core" cx="300" cy="220" r="28" />
-            <circle className="signal-map-node" cx="128" cy="108" r="12" />
-            <circle className="signal-map-node" cx="500" cy="118" r="12" />
-            <circle className="signal-map-node" cx="128" cy="366" r="12" />
-            <circle className="signal-map-node" cx="528" cy="340" r="12" />
-            <circle className="signal-map-node" cx="360" cy="384" r="12" />
-          </svg>
-          <span className="signal-map-label signal-map-label--a">DISCOVER</span>
-          <span className="signal-map-label signal-map-label--b">LAUNCH</span>
-          <span className="signal-map-label signal-map-label--c">TRACK</span>
-          <span className="signal-map-label signal-map-label--d">SUPPORT</span>
-          <span className="signal-map-label signal-map-label--e">REVIEW</span>
-          <div className="signal-map-center"><span>YOUR</span><b>MOVE</b></div>
-          <div className="signal-map-legend"><span><i />Open route</span><span><i />Active record</span></div>
-        </figure>
-      </section>
-
-      <section className="signal-index" aria-label="Panel capabilities">
-        <div><span>CATALOG</span><b>Services in context</b></div>
-        <div><span>ACTIVITY</span><b>Order status in view</b></div>
-        <div><span>SUPPORT</span><b>Help, kept close</b></div>
-        <div><span>ACCESS</span><b>API when you need it</b></div>
-      </section>
-
-      <section className="signal-section signal-method" id="method">
-        <div className="signal-section-intro">
-          <span className="signal-index-mark">02</span>
-          <div>
-            <p className="signal-eyebrow">The working method</p>
-            <h2>Less dashboard. More direction.</h2>
+        <div className="social-hero-stage" aria-label="Social campaign dashboard preview">
+          <div className="social-stage-spark social-stage-spark--one" aria-hidden="true" />
+          <div className="social-stage-spark social-stage-spark--two" aria-hidden="true" />
+          <div className="social-phone-card">
+            <div className="social-phone-topbar"><span className="social-phone-dots"><i /><i /><i /></span><span>boost feed</span><i className="fe fe-more-horizontal" /></div>
+            <div className="social-phone-profile">
+              <span className="social-profile-avatar"><i className="fa fa-instagram" /></span>
+              <div><b>Campaign pulse</b><small>Instagram · active now</small></div>
+              <span className="social-live-pill">LIVE</span>
+            </div>
+            <div className="social-phone-post">
+              <div className="social-post-orbit"><i className="fa fa-instagram" /><span>+</span></div>
+              <div className="social-post-wave"><i /><i /><i /><i /><i /><i /><i /></div>
+              <span className="social-post-caption">Your next post is taking off</span>
+            </div>
+            <div className="social-post-stats">
+              <span><i className="fe fe-heart" /> 12.8K</span>
+              <span><i className="fe fe-message-circle" /> 1.4K</span>
+              <span><i className="fe fe-send" /> 3.2K</span>
+            </div>
+            <div className="social-phone-progress"><span /><span /><span /><span /><span /></div>
           </div>
-        </div>
-        <div className="signal-method-copy">
-          <p>Most panels bury the next action under a layer of noise. {title} is composed as an operational ledger: each surface exists to help you decide, launch, or understand what happened.</p>
-          <Link href="/services" className="signal-text-link">See the live catalog <i className="fe fe-arrow-up-right" /></Link>
-        </div>
-        <div className="signal-principles">
-          {PRINCIPLES.map(([number, heading, body]) => (
-            <article key={number}>
-              <span>{number}</span>
-              <h3>{heading}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
+          <div className="social-mini-card social-mini-card--growth"><span className="social-mini-icon"><i className="fa fa-youtube-play" /></span><div><small>Video energy</small><b>+4.8K views</b></div></div>
+          <div className="social-mini-card social-mini-card--audience"><span className="social-mini-icon"><i className="fa fa-facebook" /></span><div><small>Audience pulse</small><b>Growing now</b></div></div>
+          <span className="social-stage-sticker social-stage-sticker--tiktok"><i className="fa fa-music" /></span>
+          <span className="social-stage-sticker social-stage-sticker--twitter"><i className="fa fa-twitter" /></span>
         </div>
       </section>
 
-      <section className="signal-section signal-workflow">
-        <div className="signal-workflow-heading">
-          <p className="signal-eyebrow">A composed sequence</p>
-          <h2>Four moves. One clean record.</h2>
-          <p>Everything stays close enough to make the next decision simple.</p>
-        </div>
-        <div className="signal-steps">
-          {STEPS.map(([number, heading, body]) => (
-            <article key={number}>
-              <span>{number}</span>
-              <div><h3>{heading}</h3><p>{body}</p></div>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="signal-section signal-platforms">
-        <div className="signal-platform-copy">
-          <p className="signal-eyebrow">A channel-aware workspace</p>
-          <h2>Where attention already lives.</h2>
-          <p>The catalog is structured around social channels, so the route from intent to action stays easy to read.</p>
-        </div>
-        <div className="signal-platform-list" aria-label="Social platform categories">
+      <section className="social-platform-strip" aria-label="Supported social platforms">
+        <div className="social-platform-track">
           <span><i className="fa fa-instagram" />Instagram</span>
           <span><i className="fa fa-youtube-play" />YouTube</span>
           <span><i className="fa fa-music" />TikTok</span>
           <span><i className="fa fa-facebook" />Facebook</span>
+          <span><i className="fa fa-twitter" />X / Twitter</span>
+          <span><i className="fa fa-soundcloud" />SoundCloud</span>
         </div>
       </section>
 
-      <section className="signal-section signal-faq" id="faq">
-        <div className="signal-faq-title">
-          <p className="signal-eyebrow">Before you begin</p>
-          <h2>Useful answers. No filler.</h2>
-          <Link href="/faq" className="signal-text-link">Visit the knowledge base <i className="fe fe-arrow-up-right" /></Link>
+      <section className="social-section social-intro" id="method">
+        <div className="social-section-heading">
+          <p className="social-eyebrow">Not just another panel</p>
+          <h2>Built for the way social actually moves.</h2>
+          <p>Every campaign begins with a moment. The panel is designed to help that moment travel farther, faster, and with less friction.</p>
         </div>
-        <div className="signal-faq-list">
+        <div className="social-intro-visual" aria-hidden="true">
+          <FloatingSocialIcons className="social-float-field--intro" />
+          <div className="social-thread social-thread--one" />
+          <div className="social-thread social-thread--two" />
+          <div className="social-thread-dot social-thread-dot--one" />
+          <div className="social-thread-dot social-thread-dot--two" />
+          <div className="social-thread-dot social-thread-dot--three" />
+          <span className="social-intro-center"><i className="fe fe-zap" /></span>
+        </div>
+      </section>
+
+      <section className="social-section social-growth-section">
+        <div className="social-growth-heading">
+          <p className="social-eyebrow">Pick your kind of momentum</p>
+          <h2>Every boost has a different beat.</h2>
+        </div>
+        <div className="social-growth-grid">
+          {GROWTH_MODES.map((mode) => (
+            <article className={`social-growth-card social-growth-card--${mode.tone}`} key={mode.title}>
+              <span className="social-growth-icon"><i className={mode.icon} /></span>
+              <h3>{mode.title}</h3>
+              <p>{mode.text}</p>
+              <Link href="/services">See services <i className="fe fe-arrow-up-right" /></Link>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="social-section social-workflow-section">
+        <div className="social-workflow-visual" aria-hidden="true">
+          <div className="social-workflow-ring social-workflow-ring--one" />
+          <div className="social-workflow-ring social-workflow-ring--two" />
+          <span className="social-workflow-core"><i className="fe fe-zap" /></span>
+          <span className="social-workflow-icon social-workflow-icon--one"><i className="fa fa-instagram" /></span>
+          <span className="social-workflow-icon social-workflow-icon--two"><i className="fa fa-youtube-play" /></span>
+          <span className="social-workflow-icon social-workflow-icon--three"><i className="fa fa-facebook" /></span>
+          <span className="social-workflow-icon social-workflow-icon--four"><i className="fa fa-music" /></span>
+        </div>
+        <div className="social-workflow-copy">
+          <p className="social-eyebrow">From idea to impact</p>
+          <h2>Four taps to your next social push.</h2>
+          <div className="social-steps">
+            {STEPS.map(([number, title, text]) => (
+              <article key={number}>
+                <span>{number}</span>
+                <div><h3>{title}</h3><p>{text}</p></div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="social-section social-faq-section" id="faq">
+        <div className="social-faq-copy">
+          <p className="social-eyebrow">Need the details?</p>
+          <h2>Questions from the feed.</h2>
+          <p>Get a quick read below, or head to the full knowledge base when you need more.</p>
+          <Link href="/faq" className="social-action social-action--ghost">Open FAQ <i className="fe fe-arrow-up-right" /></Link>
+        </div>
+        <div className="social-faq-list">
           {FAQS.map(([question, answer], index) => (
             <details key={question}>
               <summary><span>0{index + 1}</span>{question}<i className="fe fe-plus" /></summary>
@@ -151,15 +186,13 @@ export default async function HomePage({ searchParams }) {
         </div>
       </section>
 
-      <section className="signal-closing">
+      <section className="social-final-cta">
+        <FloatingSocialIcons className="social-float-field--final" />
         <div>
-          <span className="signal-index-mark">03</span>
-          <p className="signal-eyebrow">The field is open</p>
-          <h2>Give your next campaign a clearer beginning.</h2>
-        </div>
-        <div>
+          <p className="social-eyebrow">Your audience is out there</p>
+          <h2>Give them something to find.</h2>
           <p>{tagline}</p>
-          <Link className="atelier-action atelier-action--solid" href={primaryHref}>{primaryLabel} <i className="fe fe-arrow-up-right" /></Link>
+          <Link className="social-action social-action--primary" href={primaryHref}><i className="fe fe-zap" />{primaryLabel}</Link>
         </div>
       </section>
     </main>

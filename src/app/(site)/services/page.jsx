@@ -16,9 +16,9 @@ export default async function ServicesPage() {
       <section className="pt-90 pb-90">
         <div className="container atelier-public-page text-center">
           <div className="atelier-section-heading center">
-            <p className="atelier-kicker">Service matrix</p>
-            <h1>Explore the catalog.</h1>
-            <p>Sign in to see the full service list and launch campaigns from your workspace.</p>
+            <p className="atelier-kicker">Social menu</p>
+            <h1>Explore your boost menu.</h1>
+            <p>Sign in to explore services and start campaigns from your social workspace.</p>
           </div>
           <Link href="/login?next=/services" className="btn mt-4"><i className="fe fe-log-in" /> Sign in to explore</Link>
         </div>
@@ -52,13 +52,13 @@ export default async function ServicesPage() {
     <section className="pt-90 pb-90">
       <div className="container atelier-public-page">
         <div className="atelier-section-heading center atelier-catalog-heading">
-          <p className="atelier-kicker">Live service matrix</p>
-          <h1>Find the right signal.</h1>
+          <p className="atelier-kicker">Live boost menu</p>
+          <h1>Find your next boost.</h1>
           <p>Browse current services, limits, and rates. Prices shown are per 1,000 units.</p>
         </div>
         {!user ? (
           <div className="text-center atelier-public-actions">
-            <Link href="/login?next=/services" className="btn"><i className="fe fe-log-in" /> Sign in to launch</Link>
+            <Link href="/login?next=/services" className="btn"><i className="fe fe-log-in" /> Sign in to boost</Link>
             <Link href="/signup" className="btn btn-outline-primary">Create instant access <i className="fe fe-arrow-up-right" /></Link>
           </div>
         ) : null}

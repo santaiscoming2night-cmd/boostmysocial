@@ -1,7 +1,7 @@
 import { createAdminClient } from '@/lib/supabase/admin';
 import { dateOnly } from '@/lib/format';
 
-export const metadata = { title: 'Network updates' };
+export const metadata = { title: 'Social desk' };
 export const dynamic = 'force-dynamic';
 
 export default async function NewsPage() {
@@ -14,11 +14,11 @@ export default async function NewsPage() {
         <div className="row justify-content-center">
           <div className="col-lg-9">
             <div className="atelier-section-heading mb-5">
-              <p className="atelier-kicker">Network updates</p>
+              <p className="atelier-kicker">Social desk</p>
               <h1>What&apos;s moving.</h1>
-              <p>Release notes, service news, and panel updates from the network.</p>
+              <p>Release notes, service news, and fresh updates from the boost room.</p>
             </div>
-            {(news || []).length === 0 ? <p className="text-muted">Nothing has been published yet. Check back when the signal changes.</p> : null}
+            {(news || []).length === 0 ? <p className="text-muted">Nothing has been published yet. Check back when there’s something new to share.</p> : null}
             {(news || []).map((item) => (
               <article className="card atelier-news-card" key={item.id}>
                 <div className="card-body">

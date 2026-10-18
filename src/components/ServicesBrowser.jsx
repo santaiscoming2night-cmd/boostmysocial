@@ -53,7 +53,7 @@ export default function ServicesBrowser({ categories, services, symbol = '$', si
       </div>
 
       {grouped.length === 0 ? (
-        <div className="card atelier-service-empty"><div className="card-body text-center text-muted py-5">No services match your search.</div></div>
+        <div className="card atelier-service-empty"><div className="card-body text-center text-muted py-5">No boosts match your search.</div></div>
       ) : grouped.map(({ category: cat, rows }) => (
         <div className="card atelier-service-group" key={cat.id}>
           <div className="card-header"><span className="atelier-service-group-mark"><i className="fe fe-layers" /></span><h3 className="card-title">{cat.name}</h3><span className="atelier-service-count">{rows.length} services</span></div>
@@ -91,7 +91,7 @@ export default function ServicesBrowser({ categories, services, symbol = '$', si
                         href={signedIn ? `/order/add?service=${service.id}` : `/login?next=${encodeURIComponent(`/order/add?service=${service.id}`)}`}
                         className="btn btn-sm btn-primary"
                       >
-                        {signedIn ? 'Order' : 'Sign in'}
+                        {signedIn ? 'Boost it' : 'Sign in'}
                       </Link>
                     </td>
                   </tr>

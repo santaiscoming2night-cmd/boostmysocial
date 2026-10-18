@@ -31,23 +31,23 @@ export default async function DashboardPage() {
   const firstName = user.first_name || 'Operator';
 
   const cards = [
-    { label: 'Ready balance', value: money(user.balance, settings), icon: 'fe fe-credit-card', tone: 'primary' },
-    { label: 'Campaign spend', value: money(spent, settings), icon: 'fe fe-trending-up', tone: 'green' },
-    { label: 'Orders launched', value: total, icon: 'fe fe-send', tone: 'azure' },
-    { label: 'Moving now', value: active, icon: 'fe fe-activity', tone: 'orange' },
+    { label: 'Boost balance', value: money(user.balance, settings), icon: 'fe fe-credit-card', tone: 'primary' },
+    { label: 'Social spend', value: money(spent, settings), icon: 'fe fe-trending-up', tone: 'green' },
+    { label: 'Boosts launched', value: total, icon: 'fe fe-send', tone: 'azure' },
+    { label: 'Trending now', value: active, icon: 'fe fe-activity', tone: 'orange' },
   ];
 
   return (
     <>
       <section className="atelier-command-hero">
         <div className="atelier-command-hero-copy">
-          <p className="atelier-kicker">Campaign pulse</p>
+          <p className="atelier-kicker">Your social pulse</p>
           <h1>Good to see you, {firstName}.</h1>
-          <p>Your workspace is clear. Pick the next move and let the signal travel.</p>
+          <p>Your feed is ready for its next moment. Choose a boost and let the momentum build.</p>
         </div>
         <div className="atelier-command-hero-actions">
-          <Link href="/order/add" className="btn"><i className="fe fe-zap" /> Launch order</Link>
-          {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary"><i className="fe fe-plus" /> Add funds</Link> : null}
+          <Link href="/order/add" className="btn"><i className="fe fe-zap" /> Start a boost</Link>
+          {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary"><i className="fe fe-plus" /> Top up</Link> : null}
         </div>
       </section>
 
@@ -73,8 +73,8 @@ export default async function DashboardPage() {
         <div className="col-lg-8">
           <div className="card">
             <div className="card-header d-flex justify-content-between align-items-center">
-              <h2 className="card-title">Recent launch activity</h2>
-              <Link href="/order/log" className="btn btn-sm btn-secondary">View history <i className="fe fe-arrow-up-right" /></Link>
+              <h2 className="card-title">Recent social activity</h2>
+              <Link href="/order/log" className="btn btn-sm btn-secondary">View boosts <i className="fe fe-arrow-up-right" /></Link>
             </div>
             <div className="table-responsive">
               <table className="table card-table table-vcenter table-sm">
@@ -90,7 +90,7 @@ export default async function DashboardPage() {
                 </thead>
                 <tbody>
                   {orders.length === 0 ? (
-                    <tr><td colSpan={6} className="text-center text-muted py-4">No activity yet. <Link href="/order/add">Launch your first order</Link>.</td></tr>
+                    <tr><td colSpan={6} className="text-center text-muted py-4">No boosts yet. <Link href="/order/add">Start your first campaign</Link>.</td></tr>
                   ) : orders.map((order) => (
                     <tr key={order.id}>
                       <td className="text-muted">#{order.id}</td>
@@ -108,16 +108,16 @@ export default async function DashboardPage() {
         </div>
         <div className="col-lg-4">
           <div className="card">
-            <div className="card-header"><h2 className="card-title">Quick launchpad</h2></div>
+            <div className="card-header"><h2 className="card-title">Quick boost bar</h2></div>
             <div className="card-body d-grid">
-              <Link href="/order/add" className="btn btn-block mb-2"><i className="fe fe-zap mr-2" />New order</Link>
-              {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary btn-block mb-2"><i className="fe fe-credit-card mr-2" />Add funds</Link> : null}
-              <Link href="/tickets/new" className="btn btn-secondary btn-block mb-2"><i className="fe fe-message-circle mr-2" />Open support ticket</Link>
-              <Link href="/services" className="btn btn-outline-primary btn-block"><i className="fe fe-compass mr-2" />Browse catalog</Link>
+              <Link href="/order/add" className="btn btn-block mb-2"><i className="fe fe-zap mr-2" />New boost</Link>
+              {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary btn-block mb-2"><i className="fe fe-credit-card mr-2" />Top up</Link> : null}
+              <Link href="/tickets/new" className="btn btn-secondary btn-block mb-2"><i className="fe fe-message-circle mr-2" />Ask creator care</Link>
+              <Link href="/services" className="btn btn-outline-primary btn-block"><i className="fe fe-compass mr-2" />Browse services</Link>
             </div>
           </div>
           <div className="card">
-            <div className="card-header"><h2 className="card-title">Campaign states</h2></div>
+            <div className="card-header"><h2 className="card-title">Boost status</h2></div>
             <div className="card-body p-0">
               <table className="table table-sm mb-0">
                 <tbody>

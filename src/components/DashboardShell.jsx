@@ -66,7 +66,7 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
   const managerItems = [
     { href: '/admin/users', label: 'Users' },
     { href: '/admin/subscribers', label: 'Subscribers' },
-    { href: '/admin/deposits', label: 'Add funds' },
+    { href: '/admin/deposits', label: 'Top up' },
   ];
   const systemItems = [
     { href: '/admin/settings', label: 'Settings' },
@@ -87,23 +87,23 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
           <Brand settings={settings} href="/dashboard" onNavigate={closeMenu} showTagline />
         </div>
 
-        <p className="atelier-sidebar-caption">Control room</p>
+        <p className="atelier-sidebar-caption">Social cockpit</p>
         <nav className="atelier-dashboard-nav">
-          <NavItem href="/dashboard" icon="fe fe-grid" label="Overview" active={segment('/dashboard')} onNavigate={closeMenu} />
-          <NavItem href="/order/add" icon="fe fe-zap" label="Launch order" active={segment('/order/add')} onNavigate={closeMenu} />
+          <NavItem href="/dashboard" icon="fe fe-grid" label="Pulse" active={segment('/dashboard')} onNavigate={closeMenu} />
+          <NavItem href="/order/add" icon="fe fe-zap" label="New boost" active={segment('/order/add')} onNavigate={closeMenu} />
           <NavGroup
             icon="fe fe-layers"
-            label="Campaigns"
+            label="My boosts"
             active={segment('/order/log') || segment('/dripfeed') || segment('/subscriptions')}
             items={orderItems}
             path={path}
             onNavigate={closeMenu}
           />
-          <NavItem href="/services" icon="fe fe-compass" label="Service catalog" active={segment('/services')} onNavigate={closeMenu} />
-          {settings.enable_api_tab === '1' && !isAdmin ? <NavItem href="/api/docs" icon="fe fe-code" label="API studio" active={segment('/api/docs')} onNavigate={closeMenu} /> : null}
-          <NavItem href="/tickets" icon="fe fe-message-circle" label="Support" badge={unreadTickets || null} active={segment('/tickets')} onNavigate={closeMenu} />
-          {!isAdmin ? <NavItem href="/add-funds" icon="fe fe-credit-card" label="Add funds" active={segment('/add-funds')} onNavigate={closeMenu} /> : null}
-          <NavItem href="/transactions" icon="fe fe-clock" label="Activity log" active={segment('/transactions')} onNavigate={closeMenu} />
+          <NavItem href="/services" icon="fe fe-compass" label="Social library" active={segment('/services')} onNavigate={closeMenu} />
+          {settings.enable_api_tab === '1' && !isAdmin ? <NavItem href="/api/docs" icon="fe fe-code" label="API tools" active={segment('/api/docs')} onNavigate={closeMenu} /> : null}
+          <NavItem href="/tickets" icon="fe fe-message-circle" label="Creator care" badge={unreadTickets || null} active={segment('/tickets')} onNavigate={closeMenu} />
+          {!isAdmin ? <NavItem href="/add-funds" icon="fe fe-credit-card" label="Top up" active={segment('/add-funds')} onNavigate={closeMenu} /> : null}
+          <NavItem href="/transactions" icon="fe fe-clock" label="Boost history" active={segment('/transactions')} onNavigate={closeMenu} />
 
           {isAdmin ? (
             <>
@@ -131,9 +131,9 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
         <div className="atelier-sidebar-bottom">
           {!isAdmin ? (
             <div className="atelier-balance-clay">
-              <span>Ready balance</span>
+              <span>Boost balance</span>
               <b>{settings.currency_symbol || '$'}{balance}</b>
-              <Link href="/add-funds" onClick={closeMenu}><i className="fe fe-plus-circle" /> Add funds</Link>
+              <Link href="/add-funds" onClick={closeMenu}><i className="fe fe-plus-circle" /> Top up</Link>
             </div>
           ) : null}
           <div className="atelier-side-user">
@@ -156,10 +156,10 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
               <i className={menu ? 'fe fe-x' : 'fe fe-menu'} />
             </button>
             <span><span className="atelier-live-dot" />WORKSPACE</span>
-            <b>Ready for your next move</b>
+            <b>Your social pulse is live</b>
           </div>
           <div className="atelier-topbar-right">
-            <span className="atelier-topbar-date">{isAdmin ? 'System control' : 'Growth control'}</span>
+            <span className="atelier-topbar-date">{isAdmin ? 'Social control' : 'Creator mode'}</span>
             <ThemeToggle compact />
             <Link href="/profile" className="atelier-topbar-profile">
               <span className="atelier-avatar">{initials}</span>
@@ -179,7 +179,7 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
           <nav className="atelier-dashboard-footer-links" aria-label="Footer links">
             <Link href="/faq">FAQ</Link>
             <Link href="/page/terms">Terms</Link>
-            <Link href="/tickets/new">Support</Link>
+            <Link href="/tickets/new">Creator care</Link>
           </nav>
         </footer>
       </main>

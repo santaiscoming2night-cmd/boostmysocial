@@ -20,7 +20,7 @@ export default async function DripfeedPage() {
 
   return (
     <>
-      <PageTitle icon="fe fe-droplet">Dripfeed orders</PageTitle>
+      <PageTitle icon="fe fe-droplet">Drip-feed boosts</PageTitle>
       <div className="card">
         <div className="table-responsive">
           <table className="table card-table table-vcenter table-sm">
@@ -29,7 +29,7 @@ export default async function DripfeedPage() {
             </thead>
             <tbody>
               {(orders || []).length === 0 ? (
-                <tr><td colSpan={9} className="text-center text-muted py-4">No dripfeed orders yet.</td></tr>
+                <tr><td colSpan={9} className="text-center text-muted py-4">No drip-feed boosts yet.</td></tr>
               ) : orders.map((order) => (
                 <tr key={order.id}>
                   <td>#{order.id}</td>

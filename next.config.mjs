@@ -3,6 +3,8 @@ const nextConfig = {
   reactStrictMode: true,
   images: { unoptimized: true },
   eslint: { ignoreDuringBuilds: true },
+  // Arena previews are served through an e2b.app subdomain during development.
+  allowedDevOrigins: ['*.e2b.app'],
   async redirects() {
     return [
       { source: '/terms', destination: '/page/terms', permanent: false },

@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import PageTitle from '@/components/PageTitle';
 import OrderForm from './OrderForm';
 
-export const metadata = { title: 'New order' };
+export const metadata = { title: 'New boost' };
 export const dynamic = 'force-dynamic';
 
 export default async function NewOrderPage({ searchParams }) {
@@ -25,7 +25,7 @@ export default async function NewOrderPage({ searchParams }) {
 
   return (
     <>
-      <PageTitle icon="fe fe-shopping-cart">New order</PageTitle>
+      <PageTitle icon="fe fe-shopping-cart">New boost</PageTitle>
       <div className="row justify-content-md-center">
         <div className="col-md-11">
           <div className="card">

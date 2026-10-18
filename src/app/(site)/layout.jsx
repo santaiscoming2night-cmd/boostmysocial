@@ -10,7 +10,7 @@ export default async function SiteLayout({ children }) {
   const [settings, user] = await Promise.all([getSettings(), getSessionUser()]);
 
   return (
-    <div className="atelier-site">
+    <div className="social-site">
       <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css" />
       <link rel="stylesheet" href="/assets/css/core.css" />
       <link rel="stylesheet" href="/assets/css/nova-panel.css" />

@@ -26,7 +26,7 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
     setError('');
     setSuccess(null);
 
-    if (!service) return setError('Choose a service first.');
+    if (!service) return setError('Choose a boost first.');
     if (!link.trim()) return setError('Enter the link for your order.');
     const qty = Number(quantity);
     if (!qty || qty < service.min || qty > service.max) {
@@ -75,15 +75,15 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
       {error ? <div className="alert alert-danger">{error}</div> : null}
       {success ? (
         <div className="alert alert-success">
-          Order <strong>#{success.id}</strong> placed. Charged {symbol}{Number(success.charge).toFixed(2)}, new balance {symbol}{Number(success.balance).toFixed(2)}.{' '}
-          <a href="/order/log" className="alert-link">View order logs</a>
+          Boost <strong>#{success.id}</strong> placed. Charged {symbol}{Number(success.charge).toFixed(2)}, new balance {symbol}{Number(success.balance).toFixed(2)}.{' '}
+          <a href="/order/log" className="alert-link">View boost history</a>
         </div>
       ) : null}
 
       <form className="form atelier-order-form" onSubmit={submit}>
         <div className="row">
           <div className="col-md-6">
-            <div className="content-header-title"><h4><i className="fa fa-shopping-cart mr-2" />New order</h4></div>
+            <div className="content-header-title"><h4><i className="fa fa-shopping-cart mr-2" />New boost</h4></div>
             <div className="form-group">
               <label>Category</label>
               <select className="form-control" value={categoryId} onChange={(e) => { setCategoryId(e.target.value); setServiceId(''); }} required>
@@ -94,9 +94,9 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
               </select>
             </div>
             <div className="form-group">
-              <label>Order service</label>
+              <label>Boost service</label>
               <select className="form-control" value={serviceId} onChange={(e) => setServiceId(e.target.value)} required disabled={!categoryId}>
-                <option value="">Choose a service</option>
+                <option value="">Choose a boost</option>
                 {categoryServices.map((item) => (
                   <option key={item.id} value={item.id}>#{item.id} — {item.name}</option>
                 ))}
@@ -139,7 +139,7 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
               <textarea className="form-control" rows={2} value={note} onChange={(e) => setNote(e.target.value)} />
             </div>
             <button className="btn btn-primary btn-block btn-lg" type="submit" disabled={busy}>
-              {busy ? 'Placing order…' : `Place order${charge ? ` — ${symbol}${charge.toFixed(2)}` : ''}`}
+              {busy ? 'Starting boost…' : `Start boost${charge ? ` — ${symbol}${charge.toFixed(2)}` : ''}`}
             </button>
           </div>
 
@@ -157,7 +157,7 @@ export default function OrderForm({ categories, services, prices, symbol, minimu
               <div className="card bg-light">
                 <div className="card-body text-muted">
                   Choose a category and service to see its minimum, maximum, price and description.
-                  {minimumDeposit ? <div className="mt-3 small">Orders are charged from your balance. You can add funds from the Add funds page.</div> : null}
+                  {minimumDeposit ? <div className="mt-3 small">Boosts are charged from your balance. You can top up anytime from the balance page.</div> : null}
                 </div>
               </div>
             )}

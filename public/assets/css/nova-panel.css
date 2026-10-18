@@ -1813,3 +1813,53 @@ body {
   flex: 1 1 auto;
   align-content: start;
 }
+
+.nova-footer-subscribe {
+  display: flex;
+  gap: 7px;
+  margin-top: 14px;
+}
+
+.nova-footer-subscribe input {
+  min-width: 0;
+  height: 35px;
+  flex: 1;
+  padding: 0 10px;
+  border: 1px solid rgba(189,211,255,.15);
+  border-radius: 10px;
+  outline: none;
+  color: #ebf3ff;
+  background: rgba(4,8,20,.39);
+  box-shadow: inset 1px 1px 4px rgba(0,0,0,.2);
+  font: inherit;
+  font-size: .67rem;
+}
+
+.nova-footer-subscribe input::placeholder {
+  color: #6d7c9d;
+}
+
+.nova-footer-subscribe input:focus {
+  border-color: rgba(97,232,255,.55);
+  box-shadow: 0 0 0 3px rgba(97,232,255,.11), inset 1px 1px 4px rgba(0,0,0,.2);
+}
+
+.nova-footer-subscribe button {
+  display: grid;
+  width: 35px;
+  height: 35px;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  color: #07121e;
+  background: linear-gradient(135deg, #dffbff, var(--nova-cyan));
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,.72), 3px 4px 9px rgba(0,0,0,.24);
+  transition: transform .2s ease, filter .2s ease;
+}
+
+.nova-footer-subscribe button:hover {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+}

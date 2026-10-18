@@ -42,6 +42,11 @@ export default function LandingFooter({ settings }) {
             <span className="nova-kicker">Panel status</span>
             <b><span className="nova-live-dot" />Network online</b>
             <p>Launch an order, follow its delivery, and keep your growth operation moving from one command center.</p>
+            <form action="/api/subscribe" method="post" className="nova-footer-subscribe">
+              <label className="sr-only" htmlFor="panel-updates-email">Email for panel updates</label>
+              <input id="panel-updates-email" type="email" name="email" placeholder="Updates to your inbox" required />
+              <button type="submit" aria-label="Subscribe to panel updates"><i className="fe fe-arrow-up-right" /></button>
+            </form>
           </div>
         </div>
       </div>

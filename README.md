@@ -102,12 +102,13 @@ The schema lives in `supabase/migrations` and must be applied **in numeric order
 | `0003_rls.sql` | Row Level Security policies, grants, order-cancellation RPC |
 | `0004_seed.sql` | Catalogue and settings from the old panel (91 categories, 98 services), payment methods, 3 FAQs and 2 legal pages |
 | `0005_api.sql` | `api_place_order`, `rotate_api_key` |
+| `0006_branding_settings.sql` | Adds the editable public-site tagline setting |
 
 ### Option A — Supabase SQL Editor (no tooling)
 
 1. Open **SQL Editor → New query**.
 2. Paste the contents of `0001_schema.sql`, click **Run**.
-3. Repeat for `0002`, `0003`, `0004`, `0005`, in that order.
+3. Repeat for `0002`, `0003`, `0004`, `0005`, and `0006`, in that order.
 
 `0004_seed.sql` is the largest file (about 62 KB); paste it whole and run it once.
 
@@ -132,9 +133,13 @@ select
   (select count(*) from public.settings)   as settings;
 ```
 
-Expected: 91 categories, 98 services, 76 settings rows.
+Expected: 91 categories, 98 services, 77 settings rows.
 
 > Re-running `0004_seed.sql` after launch will overwrite settings you changed in **Admin → Settings** (categories and services are left alone). On production, prefer `npx supabase db push`; it tracks applied migrations and will not re-run them.
+
+## Brand your panel
+
+After applying `0006_branding_settings.sql`, go to **Admin → Panel settings** to set the panel name, primary logo, optional dark-mode logo, and tagline. The branding studio shows a live preview and applies the saved identity across the public site, sign-in screens, and dashboard shell.
 
 ## 3. Configure authentication
 

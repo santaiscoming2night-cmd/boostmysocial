@@ -3,13 +3,15 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import Brand from '@/components/Brand';
+import ThemeToggle from '@/components/ThemeToggle';
 
 function NavItem({ href, icon, label, active, badge, onNavigate }) {
   return (
-    <Link href={href} className={`nova-nav-link ${active ? 'active' : ''}`} onClick={onNavigate}>
+    <Link href={href} className={`atelier-nav-link ${active ? 'active' : ''}`} onClick={onNavigate}>
       <i className={icon} aria-hidden="true" />
       <span>{label}</span>
-      {badge ? <span className="nova-nav-count">{badge}</span> : null}
+      {badge ? <span className="atelier-nav-count">{badge}</span> : null}
     </Link>
   );
 }
@@ -17,18 +19,18 @@ function NavItem({ href, icon, label, active, badge, onNavigate }) {
 function NavGroup({ icon, label, active, items, path, onNavigate }) {
   const [open, setOpen] = useState(active);
   return (
-    <div className="nova-nav-group">
+    <div className="atelier-nav-group">
       <button
         type="button"
-        className={`nova-nav-trigger ${active ? 'active' : ''}`}
+        className={`atelier-nav-trigger ${active ? 'active' : ''}`}
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >
         <i className={icon} aria-hidden="true" />
         <span>{label}</span>
-        <i className="fe fe-chevron-down nova-nav-chevron" aria-hidden="true" />
+        <i className="fe fe-chevron-down atelier-nav-chevron" aria-hidden="true" />
       </button>
-      <div className={`nova-subnav ${open ? 'open' : ''}`}>
+      <div className={`atelier-subnav ${open ? 'open' : ''}`}>
         {items.map((item) => (
           <Link
             key={item.href}
@@ -78,18 +80,15 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
   ];
 
   return (
-    <div className={`nova-dashboard ${menu ? 'mobile-open' : ''}`}>
-      {menu ? <button className="nova-sidebar-backdrop" type="button" aria-label="Close navigation" onClick={closeMenu} /> : null}
-      <aside className={`nova-sidebar ${menu ? 'mobile-open' : ''}`} aria-label="Panel navigation">
-        <div className="nova-sidebar-brand">
-          <Link href="/dashboard" className="nova-brand" onClick={closeMenu} aria-label={`${settings.website_title || 'Boost My Social'} dashboard`}>
-            <span className="nova-brand-mark" aria-hidden="true">✦</span>
-            <span className="nova-brand-name">{settings.website_title || 'Boost My Social'}</span>
-          </Link>
+    <div className={`atelier-dashboard ${menu ? 'mobile-open' : ''}`}>
+      {menu ? <button className="atelier-sidebar-backdrop" type="button" aria-label="Close navigation" onClick={closeMenu} /> : null}
+      <aside className={`atelier-sidebar ${menu ? 'mobile-open' : ''}`} aria-label="Panel navigation">
+        <div className="atelier-sidebar-brand">
+          <Brand settings={settings} href="/dashboard" onNavigate={closeMenu} showTagline />
         </div>
 
-        <p className="nova-sidebar-caption">Control room</p>
-        <nav className="nova-dashboard-nav">
+        <p className="atelier-sidebar-caption">Control room</p>
+        <nav className="atelier-dashboard-nav">
           <NavItem href="/dashboard" icon="fe fe-grid" label="Overview" active={segment('/dashboard')} onNavigate={closeMenu} />
           <NavItem href="/order/add" icon="fe fe-zap" label="Launch order" active={segment('/order/add')} onNavigate={closeMenu} />
           <NavGroup
@@ -108,7 +107,7 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
 
           {isAdmin ? (
             <>
-              <p className="nova-sidebar-caption" style={{ marginTop: 15 }}>Administration</p>
+              <p className="atelier-sidebar-caption" style={{ marginTop: 15 }}>Administration</p>
               <NavGroup
                 icon="fe fe-users"
                 label="People"
@@ -129,54 +128,55 @@ export default function DashboardShell({ user, settings, unreadTickets = 0, chil
           ) : null}
         </nav>
 
-        <div className="nova-sidebar-bottom">
+        <div className="atelier-sidebar-bottom">
           {!isAdmin ? (
-            <div className="nova-balance-clay">
+            <div className="atelier-balance-clay">
               <span>Ready balance</span>
               <b>{settings.currency_symbol || '$'}{balance}</b>
               <Link href="/add-funds" onClick={closeMenu}><i className="fe fe-plus-circle" /> Add funds</Link>
             </div>
           ) : null}
-          <div className="nova-side-user">
+          <div className="atelier-side-user">
             <Link href="/profile" className="d-flex align-items-center min-width-0" onClick={closeMenu}>
-              <span className="nova-avatar">{initials}</span>
+              <span className="atelier-avatar">{initials}</span>
               <span className="ml-2">
                 <b>{firstName}</b>
                 <span>{accountLabel}</span>
               </span>
             </Link>
-            <Link href="/logout" className="nova-signout" title="Sign out" aria-label="Sign out"><i className="fe fe-log-out" /></Link>
+            <Link href="/logout" className="atelier-signout" title="Sign out" aria-label="Sign out"><i className="fe fe-log-out" /></Link>
           </div>
         </div>
       </aside>
 
-      <main className="nova-dashboard-main">
-        <header className="nova-dashboard-topbar">
-          <div className="nova-topbar-status">
-            <button className="nova-mobile-toggle" type="button" onClick={() => setMenu((value) => !value)} aria-label="Toggle navigation" aria-expanded={menu}>
+      <main className="atelier-dashboard-main">
+        <header className="atelier-dashboard-topbar">
+          <div className="atelier-topbar-status">
+            <button className="atelier-mobile-toggle" type="button" onClick={() => setMenu((value) => !value)} aria-label="Toggle navigation" aria-expanded={menu}>
               <i className={menu ? 'fe fe-x' : 'fe fe-menu'} />
             </button>
-            <span><span className="nova-live-dot" />WORKSPACE</span>
+            <span><span className="atelier-live-dot" />WORKSPACE</span>
             <b>Ready for your next move</b>
           </div>
-          <div className="nova-topbar-right">
-            <span className="nova-topbar-date">{isAdmin ? 'System control' : 'Growth control'}</span>
-            <Link href="/profile" className="nova-topbar-profile">
-              <span className="nova-avatar">{initials}</span>
+          <div className="atelier-topbar-right">
+            <span className="atelier-topbar-date">{isAdmin ? 'System control' : 'Growth control'}</span>
+            <ThemeToggle compact />
+            <Link href="/profile" className="atelier-topbar-profile">
+              <span className="atelier-avatar">{initials}</span>
               <span>{firstName}</span>
             </Link>
           </div>
         </header>
 
-        <div className="nova-dashboard-content">
+        <div className="atelier-dashboard-content">
           <div className={path.startsWith('/services') || path.startsWith('/order/log') ? 'container container-wide' : 'container'}>
             {children}
           </div>
         </div>
 
-        <footer className="nova-dashboard-footer">
+        <footer className="atelier-dashboard-footer">
           <span dangerouslySetInnerHTML={{ __html: settings.copy_right_content || '' }} />
-          <nav className="nova-dashboard-footer-links" aria-label="Footer links">
+          <nav className="atelier-dashboard-footer-links" aria-label="Footer links">
             <Link href="/faq">FAQ</Link>
             <Link href="/page/terms">Terms</Link>
             <Link href="/tickets/new">Support</Link>

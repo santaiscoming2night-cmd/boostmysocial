@@ -271,6 +271,10 @@ export async function saveSettings(formData) {
       const rows = [...map.entries()].map(([key, value]) => ({ key, value }));
       const { error } = await db.from('settings').upsert(rows, { onConflict: 'key' });
       if (error) throw new Error(error.message);
+      // Branding appears in nested layouts (header, footer, auth and dashboard),
+      // so invalidate the root layout before returning to the admin studio.
+      revalidatePath('/', 'layout');
+      revalidatePath('/admin/settings');
     },
     'Settings saved.'
   );

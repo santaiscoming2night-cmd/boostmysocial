@@ -4,224 +4,162 @@ import { getSessionUser } from '@/lib/auth';
 
 export const dynamic = 'force-dynamic';
 
-const CAPABILITIES = [
-  {
-    icon: 'fe fe-layers',
-    title: 'One clear control room',
-    text: 'Browse the catalog, launch orders, track delivery, and see the numbers that matter without hopping between tools.',
-  },
-  {
-    icon: 'fe fe-activity',
-    title: 'Built for momentum',
-    text: 'Give every campaign a clean workflow—from selecting a service to following status changes in real time.',
-  },
-  {
-    icon: 'fe fe-shield',
-    title: 'Operationally calm',
-    text: 'Keep balances, support, order logs, and API tools in a focused workspace designed for repeatable growth.',
-  },
+const PRINCIPLES = [
+  ['01', 'A considered catalog', 'Find the service, rate, limits, and context you need before you commit to a campaign.'],
+  ['02', 'A clear launch path', 'Set the destination and quantity, then send the work forward without unnecessary ceremony.'],
+  ['03', 'A visible record', 'Keep orders, balances, support, and status changes in one calm operational view.'],
 ];
 
 const STEPS = [
-  ['01', 'Create access', 'Open your workspace in a moment. There is no verification-email detour.'],
-  ['02', 'Fund your balance', 'Choose an available payment method and set your campaign budget.'],
-  ['03', 'Launch precisely', 'Pick a service, enter your link and quantity, then submit your order.'],
-  ['04', 'Watch the signal', 'Track status and delivery from the live activity surface in your panel.'],
+  ['01', 'Set your base', 'Create your workspace and prepare a balance for the work ahead.'],
+  ['02', 'Choose the channel', 'Browse the service catalog with limits and rates in plain view.'],
+  ['03', 'Make the move', 'Launch a precise order with the link, quantity, and pacing you intend.'],
+  ['04', 'Keep watch', 'Follow the order through its lifecycle from your activity ledger.'],
 ];
 
 const FAQS = [
-  ['What is an SMM panel?', 'It is a central workspace for browsing and ordering social media marketing services, then tracking every order in one place.'],
-  ['Which services can I find here?', 'The catalog can include services for social platforms such as Instagram, Facebook, YouTube, TikTok, and more. Availability is shown in the live service list.'],
-  ['What is drip-feed?', 'Drip-feed lets a larger order be paced over time rather than delivered all at once. Select services that support it when you want a more gradual schedule.'],
-  ['Can I manage multiple orders?', 'Yes. Your order logs collect all campaign activity, while the workspace makes it simple to review individual statuses and balances.'],
+  ['What is this panel for?', 'It is a focused workspace for finding, ordering, and tracking social media marketing services in one place.'],
+  ['Which platforms are represented?', 'The live catalog lists the currently available categories and services for the platforms supported by this panel.'],
+  ['What does drip-feed mean?', 'Drip-feed allows an eligible order to be paced over time instead of being delivered in one single release.'],
+  ['Can I review work after I launch it?', 'Yes. Your order log and activity views keep the campaign record and its current status close at hand.'],
 ];
 
 export default async function HomePage({ searchParams }) {
   const [settings, user, params] = await Promise.all([getSettings(), getSessionUser(), searchParams]);
   const title = settings.website_title || 'Boost My Social';
+  const tagline = settings.website_tagline || 'Social growth, kept in line.';
   const primaryHref = user ? '/dashboard' : '/signup';
-  const primaryLabel = user ? 'Open command center' : 'Create your access';
+  const primaryLabel = user ? 'Open the panel' : 'Create access';
 
   return (
     <main id="home">
       {params?.subscribed ? (
-        <div className="nova-container" style={{ paddingTop: 104 }}>
-          <div className="alert alert-success mb-0">Thanks for subscribing. Your signal is on our radar.</div>
+        <div className="signal-alert-wrap">
+          <div className="alert alert-success mb-0">You&apos;re on the dispatch list. We&apos;ll keep the notes useful.</div>
         </div>
       ) : null}
 
-      <section className="nova-hero" aria-labelledby="hero-heading">
-        <div className="nova-container nova-hero-grid">
-          <div className="nova-hero-copy">
-            <p className="nova-kicker">Social growth, re-engineered</p>
-            <h1 id="hero-heading">Your next move deserves <em>a command center.</em></h1>
-            <p className="nova-hero-lede">
-              {title} turns social growth into a deliberate system: discover the right service, launch with confidence, and keep every campaign in view.
-            </p>
-            <div className="nova-hero-actions">
-              <Link className="nova-btn" href={primaryHref}>
-                <i className="fe fe-zap" aria-hidden="true" /> {primaryLabel}
-              </Link>
-              <Link className="nova-btn nova-btn--ghost" href="/services">
-                Explore services <i className="fe fe-arrow-up-right" aria-hidden="true" />
-              </Link>
-            </div>
-            <p className="nova-hero-note"><span className="nova-live-dot" />Instant workspace access · no confirmation-email queue</p>
+      <section className="signal-hero" aria-labelledby="hero-heading">
+        <div className="signal-hero-copy">
+          <div className="signal-hero-meta"><span>01 / SIGNAL LEDGER</span><span>{title.toUpperCase()}</span></div>
+          <h1 id="hero-heading">Make the next move <em>impossible to miss.</em></h1>
+          <p className="signal-hero-tagline">{tagline}</p>
+          <p className="signal-hero-lede">A purposeful social-growth workspace for people who prefer visibility, rhythm, and a clear record of every campaign.</p>
+          <div className="signal-hero-actions">
+            <Link className="atelier-action atelier-action--solid" href={primaryHref}>{primaryLabel} <i className="fe fe-arrow-up-right" /></Link>
+            <Link className="atelier-action atelier-action--quiet" href="/services">Browse services <i className="fe fe-arrow-right" /></Link>
           </div>
+          <div className="signal-hero-footnote"><span />No verification-email detour. A workspace opens when you&apos;re ready.</div>
+        </div>
 
-          <div className="nova-hero-visual" aria-label="Preview of the panel command center">
-            <div className="nova-hero-orb" aria-hidden="true" />
-            <div className="nova-command-preview">
-              <div className="nova-preview-bar">
-                <div className="nova-preview-dots" aria-hidden="true"><b /><b /><b /></div>
-                <span>Campaign pulse</span>
-              </div>
-              <div className="nova-preview-body">
-                <div className="nova-preview-rail" aria-hidden="true">
-                  <div className="nova-preview-brand-line" />
-                  <div className="nova-preview-nav-line active" />
-                  <div className="nova-preview-nav-line" />
-                  <div className="nova-preview-nav-line" />
-                  <div className="nova-preview-nav-line" />
-                  <div className="nova-preview-nav-line" />
-                </div>
-                <div className="nova-preview-content">
-                  <div className="nova-preview-title-row"><b>Signal overview</b><span><i className="nova-live-dot" />Live</span></div>
-                  <div className="nova-preview-stats">
-                    <div className="nova-preview-stat"><span>Orders</span><b>1,284</b></div>
-                    <div className="nova-preview-stat"><span>Delivery</span><b className="cyan">99.9%</b></div>
-                    <div className="nova-preview-stat"><span>Active</span><b className="lime">24</b></div>
-                  </div>
-                  <div className="nova-preview-chart" aria-hidden="true">
-                    <svg viewBox="0 0 330 131" preserveAspectRatio="none">
-                      <defs>
-                        <linearGradient id="novaChartGradient" x1="0" x2="0" y1="0" y2="1">
-                          <stop offset="0%" stopColor="#61e8ff" stopOpacity=".32" />
-                          <stop offset="100%" stopColor="#61e8ff" stopOpacity="0" />
-                        </linearGradient>
-                      </defs>
-                      <path className="fill" d="M0,108 C24,101 31,104 47,94 C66,82 70,92 93,71 C117,51 129,73 149,59 C171,43 177,52 195,41 C222,23 231,50 250,33 C276,9 288,24 330,12 L330,131 L0,131 Z" />
-                      <path className="line" d="M0,108 C24,101 31,104 47,94 C66,82 70,92 93,71 C117,51 129,73 149,59 C171,43 177,52 195,41 C222,23 231,50 250,33 C276,9 288,24 330,12" />
-                      <circle cx="250" cy="33" r="4" />
-                    </svg>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="nova-float-card nova-float-card--orders">
-              <span className="nova-float-icon"><i className="fe fe-check" /></span>
-              <div><b>Order routed</b><span>Campaign is in motion</span></div>
-            </div>
-            <div className="nova-float-card nova-float-card--signal">
-              <span className="nova-float-icon"><i className="fe fe-activity" /></span>
-              <div><b>Signal strong</b><span>All systems ready</span></div>
-            </div>
+        <figure className="signal-map" aria-labelledby="signal-map-caption">
+          <figcaption id="signal-map-caption">CAMPAIGN FIELD / LIVE WORKSPACE</figcaption>
+          <svg viewBox="0 0 660 480" role="img" aria-label="A campaign signal map connecting social channels to a central control point">
+            <path className="signal-map-grid" d="M84 66H576M84 154H576M84 242H576M84 330H576M84 418H576M120 34V448M240 34V448M360 34V448M480 34V448" />
+            <path className="signal-map-route" d="M128 108 L300 220 L500 118 M128 366 L300 220 L528 340 M300 220 L360 384" />
+            <path className="signal-map-axis" d="M50 220H610 M300 22V458" />
+            <circle className="signal-map-core" cx="300" cy="220" r="28" />
+            <circle className="signal-map-node" cx="128" cy="108" r="12" />
+            <circle className="signal-map-node" cx="500" cy="118" r="12" />
+            <circle className="signal-map-node" cx="128" cy="366" r="12" />
+            <circle className="signal-map-node" cx="528" cy="340" r="12" />
+            <circle className="signal-map-node" cx="360" cy="384" r="12" />
+          </svg>
+          <span className="signal-map-label signal-map-label--a">DISCOVER</span>
+          <span className="signal-map-label signal-map-label--b">LAUNCH</span>
+          <span className="signal-map-label signal-map-label--c">TRACK</span>
+          <span className="signal-map-label signal-map-label--d">SUPPORT</span>
+          <span className="signal-map-label signal-map-label--e">REVIEW</span>
+          <div className="signal-map-center"><span>YOUR</span><b>MOVE</b></div>
+          <div className="signal-map-legend"><span><i />Open route</span><span><i />Active record</span></div>
+        </figure>
+      </section>
+
+      <section className="signal-index" aria-label="Panel capabilities">
+        <div><span>CATALOG</span><b>Services in context</b></div>
+        <div><span>ACTIVITY</span><b>Order status in view</b></div>
+        <div><span>SUPPORT</span><b>Help, kept close</b></div>
+        <div><span>ACCESS</span><b>API when you need it</b></div>
+      </section>
+
+      <section className="signal-section signal-method" id="method">
+        <div className="signal-section-intro">
+          <span className="signal-index-mark">02</span>
+          <div>
+            <p className="signal-eyebrow">The working method</p>
+            <h2>Less dashboard. More direction.</h2>
           </div>
+        </div>
+        <div className="signal-method-copy">
+          <p>Most panels bury the next action under a layer of noise. {title} is composed as an operational ledger: each surface exists to help you decide, launch, or understand what happened.</p>
+          <Link href="/services" className="signal-text-link">See the live catalog <i className="fe fe-arrow-up-right" /></Link>
+        </div>
+        <div className="signal-principles">
+          {PRINCIPLES.map(([number, heading, body]) => (
+            <article key={number}>
+              <span>{number}</span>
+              <h3>{heading}</h3>
+              <p>{body}</p>
+            </article>
+          ))}
         </div>
       </section>
 
-      <div className="nova-hero-trust">
-        <div className="nova-hero-trust-inner">
-          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-zap" /></span><div><b>Fast launch flow</b><span>From service to order</span></div></div>
-          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-eye" /></span><div><b>Clear visibility</b><span>Status at a glance</span></div></div>
-          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-repeat" /></span><div><b>Built to repeat</b><span>For every campaign cycle</span></div></div>
-          <div className="nova-trust-item"><span className="nova-trust-icon"><i className="fe fe-headphones" /></span><div><b>Support nearby</b><span>Open a ticket anytime</span></div></div>
+      <section className="signal-section signal-workflow">
+        <div className="signal-workflow-heading">
+          <p className="signal-eyebrow">A composed sequence</p>
+          <h2>Four moves. One clean record.</h2>
+          <p>Everything stays close enough to make the next decision simple.</p>
         </div>
-      </div>
-
-      <section className="nova-home-section" id="network">
-        <div className="nova-container">
-          <div className="nova-section-heading center">
-            <p className="nova-kicker">Less noise. More signal.</p>
-            <h2>Not another generic dashboard.</h2>
-            <p>A tactile, high-clarity operating layer for social campaigns—designed to make the next action obvious.</p>
-          </div>
-          <div className="nova-service-grid">
-            {CAPABILITIES.map((capability) => (
-              <article className="nova-service-card" key={capability.title}>
-                <span className="nova-service-glyph"><i className={capability.icon} aria-hidden="true" /></span>
-                <h3>{capability.title}</h3>
-                <p>{capability.text}</p>
-              </article>
-            ))}
-          </div>
+        <div className="signal-steps">
+          {STEPS.map(([number, heading, body]) => (
+            <article key={number}>
+              <span>{number}</span>
+              <div><h3>{heading}</h3><p>{body}</p></div>
+            </article>
+          ))}
         </div>
       </section>
 
-      <section className="nova-home-section" style={{ paddingTop: 34 }}>
-        <div className="nova-container nova-network">
-          <div className="nova-network-visual" aria-hidden="true">
-            <div className="nova-network-ring" />
-            <div className="nova-network-core"><i className="fe fe-zap" /></div>
-            <div className="nova-network-node"><i className="fa fa-instagram" /></div>
-            <div className="nova-network-node"><i className="fa fa-youtube-play" /></div>
-            <div className="nova-network-node"><i className="fa fa-facebook" /></div>
-            <div className="nova-network-node"><i className="fa fa-music" /></div>
-          </div>
-          <div className="nova-network-copy">
-            <div className="nova-section-heading">
-              <p className="nova-kicker">The connected layer</p>
-              <h2>Every platform, one focused orbit.</h2>
-              <p>Keep your social promotion workflow centered even when your audience lives in many places.</p>
-            </div>
-            <div className="nova-network-points">
-              <div className="nova-network-point"><i className="fe fe-command" /><div><b>Structured service discovery</b><span>Browse categories, compare limits, and choose a service with the context you need.</span></div></div>
-              <div className="nova-network-point"><i className="fe fe-sliders" /><div><b>Campaign-level control</b><span>Set your link, quantity, and pacing with a form that makes each order easy to understand.</span></div></div>
-              <div className="nova-network-point"><i className="fe fe-bar-chart-2" /><div><b>Activity that stays visible</b><span>Use order logs and live statuses to know what is moving without digging through clutter.</span></div></div>
-            </div>
-          </div>
+      <section className="signal-section signal-platforms">
+        <div className="signal-platform-copy">
+          <p className="signal-eyebrow">A channel-aware workspace</p>
+          <h2>Where attention already lives.</h2>
+          <p>The catalog is structured around social channels, so the route from intent to action stays easy to read.</p>
+        </div>
+        <div className="signal-platform-list" aria-label="Social platform categories">
+          <span><i className="fa fa-instagram" />Instagram</span>
+          <span><i className="fa fa-youtube-play" />YouTube</span>
+          <span><i className="fa fa-music" />TikTok</span>
+          <span><i className="fa fa-facebook" />Facebook</span>
         </div>
       </section>
 
-      <section className="nova-home-section">
-        <div className="nova-container nova-process-shell">
-          <div className="nova-section-heading center">
-            <p className="nova-kicker">A cleaner launch sequence</p>
-            <h2>Four moves to momentum.</h2>
-            <p>Designed to feel deliberate from the first click—not like another form you have to fight.</p>
-          </div>
-          <div className="nova-process-grid">
-            {STEPS.map(([number, title, text]) => (
-              <article className="nova-process-step" key={number}>
-                <span className="nova-process-number">{number}</span>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </article>
-            ))}
-          </div>
-          <div className="nova-platform-row" aria-label="Supported social platforms">
-            <span className="nova-platform"><i className="fa fa-instagram" />Instagram</span>
-            <span className="nova-platform"><i className="fa fa-youtube-play" />YouTube</span>
-            <span className="nova-platform"><i className="fa fa-music" />TikTok</span>
-            <span className="nova-platform"><i className="fa fa-facebook" />Facebook</span>
-          </div>
+      <section className="signal-section signal-faq" id="faq">
+        <div className="signal-faq-title">
+          <p className="signal-eyebrow">Before you begin</p>
+          <h2>Useful answers. No filler.</h2>
+          <Link href="/faq" className="signal-text-link">Visit the knowledge base <i className="fe fe-arrow-up-right" /></Link>
+        </div>
+        <div className="signal-faq-list">
+          {FAQS.map(([question, answer], index) => (
+            <details key={question}>
+              <summary><span>0{index + 1}</span>{question}<i className="fe fe-plus" /></summary>
+              <p>{answer}</p>
+            </details>
+          ))}
         </div>
       </section>
 
-      <section className="nova-home-section" id="faq">
-        <div className="nova-container">
-          <div className="nova-section-heading center">
-            <p className="nova-kicker">Clarity, on demand</p>
-            <h2>Questions before lift-off?</h2>
-            <p>Here are a few quick answers. Visit the knowledge base when you want to go deeper.</p>
-          </div>
-          <div className="nova-faq-grid">
-            {FAQS.map(([question, answer]) => (
-              <details key={question}>
-                <summary>{question}</summary>
-                <p>{answer}</p>
-              </details>
-            ))}
-          </div>
+      <section className="signal-closing">
+        <div>
+          <span className="signal-index-mark">03</span>
+          <p className="signal-eyebrow">The field is open</p>
+          <h2>Give your next campaign a clearer beginning.</h2>
         </div>
-      </section>
-
-      <section className="nova-home-section" style={{ paddingTop: 0 }}>
-        <div className="nova-container nova-cta-panel">
-          <p className="nova-kicker">The panel is ready</p>
-          <h2>Make your next campaign feel inevitable.</h2>
-          <p>Open a premium workspace that puts social growth, campaign activity, and your next decision in the same orbit.</p>
-          <Link className="nova-btn" href={primaryHref}><i className="fe fe-zap" /> {primaryLabel}</Link>
+        <div>
+          <p>{tagline}</p>
+          <Link className="atelier-action atelier-action--solid" href={primaryHref}>{primaryLabel} <i className="fe fe-arrow-up-right" /></Link>
         </div>
       </section>
     </main>

@@ -19,7 +19,7 @@ export default async function SignupPage({ searchParams }) {
         <div className="col-md-6 col-lg-5">
           <div className="card text-center">
             <h1 className="card-title">Access is paused.</h1>
-            <p className="nova-auth-subtitle">New workspace creation is currently closed. Please contact support if you need help.</p>
+            <p className="atelier-auth-subtitle">New workspace creation is currently closed. Please contact support if you need help.</p>
             <Link href="/login" className="btn">Back to sign in</Link>
           </div>
         </div>
@@ -32,7 +32,7 @@ export default async function SignupPage({ searchParams }) {
       <div className="col-md-7 col-lg-6">
         <div className="card">
           <h1 className="card-title">Create your access.</h1>
-          <p className="nova-auth-subtitle">Set up your command center in a moment. No confirmation-email queue—your workspace opens right after creation.</p>
+          <p className="atelier-auth-subtitle">Set up your command center in a moment. No confirmation-email queue—your workspace opens right after creation.</p>
           <Flash ok={params.ok} err={params.err} />
           <form action={signUp}>
             <div className="row">

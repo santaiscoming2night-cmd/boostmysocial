@@ -39,13 +39,13 @@ export default async function DashboardPage() {
 
   return (
     <>
-      <section className="nova-command-hero">
-        <div className="nova-command-hero-copy">
-          <p className="nova-kicker">Campaign pulse</p>
+      <section className="atelier-command-hero">
+        <div className="atelier-command-hero-copy">
+          <p className="atelier-kicker">Campaign pulse</p>
           <h1>Good to see you, {firstName}.</h1>
           <p>Your workspace is clear. Pick the next move and let the signal travel.</p>
         </div>
-        <div className="nova-command-hero-actions">
+        <div className="atelier-command-hero-actions">
           <Link href="/order/add" className="btn"><i className="fe fe-zap" /> Launch order</Link>
           {user.role !== 'admin' ? <Link href="/add-funds" className="btn btn-secondary"><i className="fe fe-plus" /> Add funds</Link> : null}
         </div>

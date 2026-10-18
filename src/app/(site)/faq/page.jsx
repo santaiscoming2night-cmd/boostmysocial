@@ -11,16 +11,16 @@ export default async function FaqPage() {
 
   return (
     <section className="pt-90 pb-90">
-      <div className="container nova-public-page">
+      <div className="container atelier-public-page">
         <div className="row justify-content-center">
           <div className="col-lg-9">
-            <div className="nova-section-heading center mb-5">
-              <p className="nova-kicker">Knowledge base</p>
+            <div className="atelier-section-heading center mb-5">
+              <p className="atelier-kicker">Knowledge base</p>
               <h1>Answers, without the noise.</h1>
               <p>Everything you need to move confidently through the panel.</p>
             </div>
             {(faqs || []).map((faq) => (
-              <details className="card nova-public-faq" key={faq.id}>
+              <details className="card atelier-public-faq" key={faq.id}>
                 <summary className="card-header">
                   <strong>{faq.question}</strong>
                   <i className="fe fe-plus" aria-hidden="true" />

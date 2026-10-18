@@ -1,40 +1,44 @@
 import Link from 'next/link';
+import Brand from '@/components/Brand';
+import ThemeToggle from '@/components/ThemeToggle';
 import { getSettings } from '@/lib/settings';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AuthLayout({ children }) {
   const settings = await getSettings();
-  const title = settings.website_title || 'Boost My Social';
+  const tagline = settings.website_tagline || 'Social growth, kept in line.';
 
   return (
-    <div className="nova-auth">
+    <div className="atelier-auth">
       <link rel="stylesheet" href="/assets/plugins/font-awesome/css/font-awesome.min.css" />
       <link rel="stylesheet" href="/assets/css/core.css" />
       <link rel="stylesheet" href="/assets/css/nova-panel.css" />
 
-      <div className="nova-auth-shell">
-        <aside className="nova-auth-aside">
-          <Link className="nova-brand" href="/" aria-label={`${title} home`}>
-            <span className="nova-brand-mark" aria-hidden="true">✦</span>
-            <span className="nova-brand-name">{title}</span>
-          </Link>
-          <div className="nova-auth-aside-copy">
-            <p className="nova-kicker">Growth control room</p>
-            <h1>Access the <span>signal.</span></h1>
-            <p>Step into a sharper social-growth workspace built around action, not busywork.</p>
-            <div className="nova-auth-mini-grid" aria-label="Panel benefits">
-              <div className="nova-auth-mini"><i className="fe fe-zap" /><b>Fast campaign launch</b></div>
-              <div className="nova-auth-mini"><i className="fe fe-eye" /><b>Visible order activity</b></div>
-              <div className="nova-auth-mini"><i className="fe fe-life-buoy" /><b>Support in reach</b></div>
-            </div>
+      <div className="atelier-auth-shell">
+        <aside className="atelier-auth-aside">
+          <div className="atelier-auth-aside-top">
+            <Brand settings={settings} showTagline />
+            <ThemeToggle />
           </div>
-          <span className="nova-auth-aside-status"><span className="nova-live-dot" />Secure panel access online</span>
+          <div className="atelier-auth-manifesto">
+            <span className="atelier-index">ACCESS / 01</span>
+            <h1>A quieter place to make <em>louder moves.</em></h1>
+            <p>{tagline}</p>
+          </div>
+          <div className="atelier-auth-principles">
+            <span><i className="fe fe-zap" />Deliberate launch flow</span>
+            <span><i className="fe fe-eye" />Clear order visibility</span>
+            <span><i className="fe fe-life-buoy" />Support within reach</span>
+          </div>
         </aside>
-        <section className="nova-auth-content">
-          <Link href="/" className="nova-auth-back"><i className="fe fe-arrow-left" aria-hidden="true" /> Back to site</Link>
-          <div className="nova-auth-card">{children}</div>
-          <p className="nova-auth-footnote">Protected workspace · Built for focused campaign operations</p>
+        <section className="atelier-auth-content">
+          <div className="atelier-auth-content-top">
+            <Link href="/" className="atelier-back"><i className="fe fe-arrow-left" aria-hidden="true" /> Back to site</Link>
+            <span>SECURE WORKSPACE</span>
+          </div>
+          <div className="atelier-auth-card">{children}</div>
+          <p className="atelier-auth-footnote">Your access is private. Your next move is yours.</p>
         </section>
       </div>
     </div>

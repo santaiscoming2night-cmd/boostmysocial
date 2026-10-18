@@ -16,7 +16,7 @@ export default async function LoginPage({ searchParams }) {
       <div className="col-md-6 col-lg-5">
         <div className="card">
           <h1 className="card-title">Welcome back.</h1>
-          <p className="nova-auth-subtitle">Sign in to your {settings.website_title || 'Boost My Social'} command center.</p>
+          <p className="atelier-auth-subtitle">Sign in to your {settings.website_title || 'Boost My Social'} command center.</p>
           <Flash ok={params.ok} err={params.err} info={params.blocked ? 'This account is currently unavailable.' : null} />
           <form action={signIn}>
             {params.next ? <input type="hidden" name="next" value={params.next} /> : null}

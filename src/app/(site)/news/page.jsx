@@ -10,19 +10,19 @@ export default async function NewsPage() {
 
   return (
     <section className="pt-90 pb-90">
-      <div className="container nova-public-page">
+      <div className="container atelier-public-page">
         <div className="row justify-content-center">
           <div className="col-lg-9">
-            <div className="nova-section-heading mb-5">
-              <p className="nova-kicker">Network updates</p>
+            <div className="atelier-section-heading mb-5">
+              <p className="atelier-kicker">Network updates</p>
               <h1>What&apos;s moving.</h1>
               <p>Release notes, service news, and panel updates from the network.</p>
             </div>
             {(news || []).length === 0 ? <p className="text-muted">Nothing has been published yet. Check back when the signal changes.</p> : null}
             {(news || []).map((item) => (
-              <article className="card nova-news-card" key={item.id}>
+              <article className="card atelier-news-card" key={item.id}>
                 <div className="card-body">
-                  <div className="nova-news-date"><span className="nova-live-dot" />{dateOnly(item.created_at)}</div>
+                  <div className="atelier-news-date"><span className="atelier-live-dot" />{dateOnly(item.created_at)}</div>
                   <div style={{ whiteSpace: 'pre-wrap' }}>{item.description}</div>
                 </div>
               </article>

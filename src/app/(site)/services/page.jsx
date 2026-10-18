@@ -14,9 +14,9 @@ export default async function ServicesPage() {
   if (!user && !publicList) {
     return (
       <section className="pt-90 pb-90">
-        <div className="container nova-public-page text-center">
-          <div className="nova-section-heading center">
-            <p className="nova-kicker">Service matrix</p>
+        <div className="container atelier-public-page text-center">
+          <div className="atelier-section-heading center">
+            <p className="atelier-kicker">Service matrix</p>
             <h1>Explore the catalog.</h1>
             <p>Sign in to see the full service list and launch campaigns from your workspace.</p>
           </div>
@@ -50,14 +50,14 @@ export default async function ServicesPage() {
 
   return (
     <section className="pt-90 pb-90">
-      <div className="container nova-public-page">
-        <div className="nova-section-heading center nova-catalog-heading">
-          <p className="nova-kicker">Live service matrix</p>
+      <div className="container atelier-public-page">
+        <div className="atelier-section-heading center atelier-catalog-heading">
+          <p className="atelier-kicker">Live service matrix</p>
           <h1>Find the right signal.</h1>
           <p>Browse current services, limits, and rates. Prices shown are per 1,000 units.</p>
         </div>
         {!user ? (
-          <div className="text-center nova-public-actions">
+          <div className="text-center atelier-public-actions">
             <Link href="/login?next=/services" className="btn"><i className="fe fe-log-in" /> Sign in to launch</Link>
             <Link href="/signup" className="btn btn-outline-primary">Create instant access <i className="fe fe-arrow-up-right" /></Link>
           </div>

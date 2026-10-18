@@ -2,17 +2,15 @@ import { getSettings } from '@/lib/settings';
 import PageTitle from '@/components/PageTitle';
 import Flash from '@/components/Flash';
 import SubmitButton from '@/components/SubmitButton';
+import BrandSettingsFields from '@/components/BrandSettingsFields';
 import { saveSettings } from '@/app/actions/admin';
 
-export const metadata = { title: 'Settings' };
+export const metadata = { title: 'Panel settings' };
 export const dynamic = 'force-dynamic';
 
 const FIELDS = [
-  { key: 'website_title', label: 'Website title' },
   { key: 'website_desc', label: 'Meta description', type: 'textarea' },
   { key: 'website_keywords', label: 'Meta keywords', type: 'textarea' },
-  { key: 'website_logo', label: 'Logo URL' },
-  { key: 'website_logo_white', label: 'White logo URL' },
   { key: 'website_favicon', label: 'Favicon URL' },
   { key: 'currency_code', label: 'Currency code (USD, GHS…)' },
   { key: 'currency_symbol', label: 'Currency symbol' },
@@ -39,21 +37,28 @@ export default async function AdminSettingsPage({ searchParams }) {
 
   return (
     <>
-      <PageTitle icon="fe fe-settings">Settings</PageTitle>
+      <PageTitle icon="fe fe-sliders">Panel settings</PageTitle>
       <Flash ok={params.ok} err={params.err} />
-      <form action={saveSettings}>
-        <div className="card">
-          <div className="card-header"><h3 className="card-title">Website</h3></div>
+      <form action={saveSettings} className="settings-studio-form">
+        <BrandSettingsFields settings={settings} />
+
+        <div className="card settings-studio-card">
+          <div className="card-header">
+            <div>
+              <span className="settings-studio-label">Operations</span>
+              <h2 className="card-title">Panel configuration</h2>
+            </div>
+          </div>
           <div className="card-body">
             <div className="row">
               {FIELDS.map((field) => (
                 <div className={field.type === 'textarea' ? 'col-12' : 'col-md-6'} key={field.key}>
                   <div className="form-group">
-                    <label className="form-label">{field.label}</label>
+                    <label className="form-label" htmlFor={`field-${field.key}`}>{field.label}</label>
                     {field.type === 'textarea' ? (
-                      <textarea name={`s_${field.key}`} defaultValue={settings[field.key] || ''} className="form-control" rows={2} />
+                      <textarea id={`field-${field.key}`} name={`s_${field.key}`} defaultValue={settings[field.key] || ''} className="form-control" rows={2} />
                     ) : (
-                      <input name={`s_${field.key}`} defaultValue={settings[field.key] || ''} className="form-control" />
+                      <input id={`field-${field.key}`} name={`s_${field.key}`} defaultValue={settings[field.key] || ''} className="form-control" />
                     )}
                   </div>
                 </div>
@@ -62,9 +67,14 @@ export default async function AdminSettingsPage({ searchParams }) {
           </div>
         </div>
 
-        <div className="card">
-          <div className="card-header"><h3 className="card-title">Features</h3></div>
-          <div className="card-body">
+        <div className="card settings-studio-card">
+          <div className="card-header">
+            <div>
+              <span className="settings-studio-label">Controls</span>
+              <h2 className="card-title">Workspace access</h2>
+            </div>
+          </div>
+          <div className="card-body settings-switches">
             {TOGGLES.map((toggle) => (
               <div className="custom-control custom-switch mb-3" key={toggle.key}>
                 <input type="hidden" name={`s_${toggle.key}`} value="0" />
@@ -82,7 +92,10 @@ export default async function AdminSettingsPage({ searchParams }) {
           </div>
         </div>
 
-        <SubmitButton className="btn btn-primary btn-lg" pendingText="Saving…">Save settings</SubmitButton>
+        <div className="settings-save-bar">
+          <p>Changes update the panel name, brand mark, and message everywhere on the next page load.</p>
+          <SubmitButton className="btn btn-primary btn-lg" pendingText="Saving identity…">Save panel identity <i className="fe fe-check" /></SubmitButton>
+        </div>
       </form>
     </>
   );

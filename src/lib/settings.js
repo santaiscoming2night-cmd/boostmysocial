@@ -4,6 +4,7 @@ import { hasServiceRole } from '@/lib/supabase/env';
 
 export const DEFAULT_SETTINGS = {
   website_title: 'Boost My Social',
+  website_tagline: 'Social growth, kept in line.',
   website_desc:
     'Boost My Social - #1 SMM Reseller Panel - Best SMM Panel for Resellers. SMM Panel for Facebook, Instagram, YouTube and more services!',
   website_keywords:
